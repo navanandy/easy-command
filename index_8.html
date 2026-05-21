@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EASY Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:#1A1B1C;color:#F0F1F2;min-height:100vh;font-size:14px}
+a{color:inherit;text-decoration:none}
+header{background:#2B2D2F;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:1px}
+.logo span{color:#E8620A}
+.hstats{display:flex;gap:24px}
+.hstat .v{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:#E8620A;text-align:center}
+.hstat .l{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:#9DA0A4;text-align:center}
+.tabs{display:flex;background:#2B2D2F;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 24px;overflow-x:auto}
+.tbtn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;padding:12px 18px;background:none;border:none;color:#9DA0A4;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tbtn:hover{color:#F0F1F2}
+.tbtn.on{color:#E8620A;border-bottom-color:#E8620A}
+.main{padding:20px 24px;max-width:1400px;margin:0 auto}
+.panel{display:none}
+.panel.on{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:800px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
+.card{background:#222426;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:18px 20px}
+.card.accent{border-color:rgba(232,98,10,0.35)}
+.ctitle{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;color:#9DA0A4;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ctitle:before{content:'';width:6px;height:6px;border-radius:50%;background:#E8620A;display:inline-block}
+.stat{background:#222426;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 18px}
+.stat .v{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:#E8620A;line-height:1}
+.stat .l{font-size:12px;color:#9DA0A4;margin-top:4px}
+label{font-size:12px;color:#9DA0A4;margin-bottom:5px;display:block;font-weight:500}
+input,textarea,select{background:#1A1B1C;border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#F0F1F2;font-family:'Barlow',sans-serif;font-size:13px;padding:9px 12px;width:100%;outline:none;transition:border-color 0.2s}
+input:focus,textarea:focus,select:focus{border-color:#E8620A}
+textarea{resize:vertical;min-height:80px}
+select option{background:#2B2D2F}
+.field{margin-bottom:14px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:9px 18px;border-radius:7px;border:none;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px}
+.btp{background:#E8620A;color:#fff}
+.btp:hover{background:#FF7A25}
+.btg{background:transparent;color:#9DA0A4;border:1px solid rgba(255,255,255,0.1)}
+.btg:hover{background:#282A2C;color:#F0F1F2}
+.bts{background:rgba(46,204,113,0.15);color:#2ECC71;border:1px solid rgba(46,204,113,0.3)}
+.btd{background:rgba(231,76,60,0.15);color:#E74C3C;border:1px solid rgba(231,76,60,0.3)}
+.btsm{padding:5px 10px;font-size:11px}
+.row-end{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.row-bet{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.chip{font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid transparent;transition:all 0.18s}
+.ch-fb{background:rgba(66,103,178,0.15);color:#7a9be8;border-color:rgba(66,103,178,0.25)}
+.ch-fb.on{background:rgba(66,103,178,0.4);border-color:#4267b2}
+.ch-dd{background:rgba(232,98,10,0.12);color:#e88a30;border-color:rgba(232,98,10,0.25)}
+.ch-dd.on{background:rgba(232,98,10,0.35);border-color:#E8620A}
+.ch-mh{background:rgba(46,204,113,0.1);color:#4ecb7a;border-color:rgba(46,204,113,0.2)}
+.ch-mh.on{background:rgba(46,204,113,0.3);border-color:#2ECC71}
+.ch-ad{background:rgba(52,152,219,0.12);color:#6ab3e8;border-color:rgba(52,152,219,0.22)}
+.ch-ad.on{background:rgba(52,152,219,0.35);border-color:#3498DB}
+.ch-cg{background:rgba(155,89,182,0.12);color:#b97ddd;border-color:rgba(155,89,182,0.22)}
+.ch-cg.on{background:rgba(155,89,182,0.35);border-color:#9b59b6}
+.ch-tk{background:rgba(255,0,80,0.1);color:#ff6699;border-color:rgba(255,0,80,0.2)}
+.ch-tk.on{background:rgba(255,0,80,0.3);border-color:#ff0050}
+.ch-rf{background:rgba(243,156,18,0.1);color:#f5c060;border-color:rgba(243,156,18,0.2)}
+.ch-rf.on{background:rgba(243,156,18,0.35);border-color:#F39C12}
+/* ai box */
+.aibox{background:rgba(232,98,10,0.05);border:1px solid rgba(232,98,10,0.35);border-radius:10px;padding:16px 18px;margin-top:14px}
+.aihdr{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:#E8620A;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.aiico{width:18px;height:18px;background:#E8620A;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700}
+.aiq{background:#1A1B1C;border-left:3px solid #E8620A;padding:12px 14px;border-radius:0 7px 7px 0;font-size:13px;line-height:1.6;margin-top:8px;color:#F0F1F2;font-style:italic}
+/* badge */
+.bdg{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:0.4px}
+.b-new{background:rgba(52,152,219,0.2);color:#3498DB}
+.b-quoted{background:rgba(243,156,18,0.2);color:#F39C12}
+.b-won{background:rgba(46,204,113,0.2);color:#2ECC71}
+.b-lost{background:rgba(231,76,60,0.2);color:#E74C3C}
+/* table */
+.ltbl{width:100%;border-collapse:collapse;font-size:13px}
+.ltbl th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#6B6E72;border-bottom:1px solid rgba(255,255,255,0.08)}
+.ltbl td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+.ltbl tr:hover td{background:rgba(255,255,255,0.02)}
+/* pricing rows */
+.pr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
+.pr.tot{border-bottom:none;border-top:1px solid rgba(255,255,255,0.1);margin-top:4px;padding-top:10px;font-weight:600;font-size:15px;color:#E8620A}
+/* planning */
+.prow{display:grid;grid-template-columns:1.8fr 1fr 0.7fr 0.7fr 90px;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;font-size:12px}
+.phdr{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#6B6E72;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+.ptag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.pt-ext{background:rgba(52,152,219,0.15);color:#3498DB}
+.pt-new{background:rgba(46,204,113,0.15);color:#2ECC71}
+.pt-ren{background:rgba(243,156,18,0.15);color:#F39C12}
+.pt-com{background:rgba(155,89,182,0.15);color:#b97ddd}
+/* templates */
+.tcard{background:#282A2C;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:15px;cursor:pointer;transition:all 0.18s;margin-bottom:10px}
+.tcard:hover{border-color:rgba(232,98,10,0.35)}
+.tcard.on{border-color:#E8620A;background:rgba(232,98,10,0.05)}
+.tname{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:#F0F1F2;margin-bottom:3px}
+.ttag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase;background:rgba(232,98,10,0.12);color:#E8620A;display:inline-block;margin-bottom:7px}
+.tprev{font-size:12px;color:#9DA0A4;line-height:1.5}
+.tbody{display:none;font-size:13px;line-height:1.7;color:#F0F1F2;background:#1A1B1C;padding:12px 14px;border-radius:7px;border:1px solid rgba(255,255,255,0.08);margin-top:12px;white-space:pre-wrap}
+.tcard.on .tbody{display:block}
+.tbns{display:none;gap:8px;margin-top:10px}
+.tcard.on .tbns{display:flex}
+/* county bars */
+.cbar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cn{font-size:12px;color:#9DA0A4;width:65px;flex-shrink:0}
+.ct{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.cf{height:100%;background:#E8620A;border-radius:3px}
+.cc{font-size:12px;color:#9DA0A4;width:24px;text-align:right}
+/* loading */
+.dots{display:inline-flex;gap:3px;align-items:center}
+.dots span{width:4px;height:4px;border-radius:50%;background:#E8620A;animation:dp 1.2s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:0.2s}
+.dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dp{0%,80%,100%{opacity:0.3;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
+.notif{position:fixed;bottom:24px;right:24px;background:#E8620A;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999}
+.stitle{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:600;color:#F0F1F2;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.stitle:after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.notifbdg{background:#E8620A;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-left:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>EASY</span> COMMAND CENTRE</div>
+  <div class="hstats">
+    <div class="hstat"><div class="v" id="h-leads">0</div><div class="l">Leads</div></div>
+    <div class="hstat"><div class="v" id="h-val">€0</div><div class="l">Quoted</div></div>
+    <div class="hstat"><div class="v" id="h-won">0</div><div class="l">Won</div></div>
+  </div>
+  <div style="font-size:12px;color:#9DA0A4" id="h-date"></div>
+</header>
+
+<div class="tabs">
+  <button class="tbtn on" onclick="goTab('pricer',this)">AI Pricer</button>
+  <button class="tbtn" onclick="goTab('leads',this)">Lead Log <span class="notifbdg" id="lcount">0</span></button>
+  <button class="tbtn" onclick="goTab('planning',this)">Planning Alerts</button>
+  <button class="tbtn" onclick="goTab('outreach',this)">Outreach Templates</button>
+</div>
+
+<div class="main">
+
+<!-- PRICER -->
+<div class="panel on" id="p-pricer">
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card accent">
+        <div class="ctitle">New Lead — Paste & Price</div>
+        <div class="field">
+          <label>Source</label>
+          <div class="chips">
+            <div class="chip ch-fb on" onclick="pickSrc(this,'Facebook Groups')">Facebook Groups</div>
+            <div class="chip ch-fb" onclick="pickSrc(this,'FB Marketplace')">FB Marketplace</div>
+            <div class="chip ch-dd" onclick="pickSrc(this,'Done Deal')">Done Deal</div>
+            <div class="chip ch-mh" onclick="pickSrc(this,'MyHome.ie')">MyHome.ie</div>
+            <div class="chip ch-ad" onclick="pickSrc(this,'Adverts.ie')">Adverts.ie</div>
+            <div class="chip ch-cg" onclick="pickSrc(this,'Community Group')">Community Group</div>
+            <div class="chip ch-tk" onclick="pickSrc(this,'TikTok')">TikTok</div>
+            <div class="chip ch-rf" onclick="pickSrc(this,'Referral')">Referral</div>
+          </div>
+        </div>
+        <div class="fr2">
+          <div class="field" style="margin:0"><label>Location</label><input type="text" id="loc" placeholder="e.g. Navan, Co. Meath"></div>
+          <div class="field" style="margin:0"><label>Job Type</label>
+            <select id="jtype">
+              <option value="">Auto-detect</option>
+              <option>Painting & Decorating</option>
+              <option>Plastering</option>
+              <option>Tiling</option>
+              <option>Bathroom Fit-out</option>
+              <option>Kitchen Fit-out</option>
+              <option>Extension / Build</option>
+              <option>Roofing</option>
+              <option>Guttering / Fascia</option>
+              <option>Garden / Landscaping</option>
+              <option>Flooring</option>
+              <option>Electrical</option>
+              <option>Plumbing</option>
+              <option>General Maintenance</option>
+              <option>Cleaning</option>
+            </select>
+          </div>
+        </div>
+        <div class="field mt12"><label>Paste job description</label><textarea id="desc" rows="5" placeholder="Paste the full post or message from Facebook, Done Deal, etc..."></textarea></div>
+        <div class="row-end">
+          <button class="btn btg btsm" onclick="clearP()">Clear</button>
+          <button class="btn btp" onclick="runPrice()">⚡ Price This Job</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" id="pout" style="min-height:300px">
+        <div class="ctitle">AI Pricing & Response</div>
+        <div id="pp" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;text-align:center;color:#6B6E72">
+          <div style="font-size:32px;margin-bottom:10px;opacity:0.3">⚡</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;color:#9DA0A4">Paste a job and hit Price This Job</div>
+        </div>
+        <div id="pl" style="display:none;padding:50px 0;text-align:center">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div style="margin-top:10px;font-size:13px;color:#9DA0A4">Analysing...</div>
+        </div>
+        <div id="pr" style="display:none"></div>
+      </div>
+      <div id="savewrap" style="display:none;margin-top:10px">
+        <button class="btn bts" style="width:100%;justify-content:center" onclick="saveLead()">✓ Save to Lead Log</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADS -->
+<div class="panel" id="p-leads">
+  <div class="row-bet">
+    <div class="stitle" style="margin:0">Lead Log</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="lsrch" placeholder="Search..." style="width:160px;padding:7px 10px" oninput="drawLeads()">
+      <select id="lflt" style="width:120px;padding:7px 10px" onchange="drawLeads()">
+        <option value="">All Status</option>
+        <option value="new">New</option>
+        <option value="quoted">Quoted</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+    </div>
+  </div>
+  <div class="g4 mt16">
+    <div class="stat"><div class="v" id="s-tot">0</div><div class="l">Total Leads</div></div>
+    <div class="stat"><div class="v" id="s-val">€0</div><div class="l">Total Quoted</div></div>
+    <div class="stat"><div class="v" id="s-won">0</div><div class="l">Jobs Won</div></div>
+    <div class="stat"><div class="v" id="s-cvr">0%</div><div class="l">Conversion</div></div>
+  </div>
+  <div class="card mt16" style="overflow-x:auto">
+    <table class="ltbl">
+      <thead><tr>
+        <th>Date</th><th>Source</th><th>Job</th><th>Location</th><th>Quote</th><th>Status</th><th>Action</th>
+      </tr></thead>
+      <tbody id="ltbody"><tr><td colspan="7" style="text-align:center;padding:40px;color:#6B6E72">No leads yet. Use the AI Pricer to add your first lead.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PLANNING -->
+<div class="panel" id="p-planning">
+  <div class="g2" style="align-items:start;gap:20px">
+    <div>
+      <div style="background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:#F39C12;margin-bottom:14px">
+        ⚡ Planning data covers Meath, Dublin, Louth, Cavan, Kildare councils
+      </div>
+      <div class="stitle">Recent Applications</div>
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select id="pcounty" style="width:auto;padding:6px 10px;font-size:12px" onchange="drawPlanning()">
+            <option value="">All Counties</option>
+            <option>Meath</option><option>Dublin</option><option>Louth</option><option>Cavan</option><option>Kildare</option>
+          </select>
+          <select id="ptype" style="width:auto;padding:6px 10px;font-size:12px" onchange="drawPlanning()">
+            <option value="">All Types</option>
+            <option>Extension</option><option>New Build</option><option>Renovation</option><option>Commercial</option>
+          </select>
+        </div>
+        <div class="prow phdr"><div>Address</div><div>Applicant</div><div>Type</div><div>County</div><div>Action</div></div>
+        <div id="ptbody"></div>
+      </div>
+    </div>
+    <div>
+      <div class="stitle">Volume by County</div>
+      <div class="card" style="margin-bottom:16px"><div id="cbars"></div></div>
+      <div class="stitle">Generate Outreach Letter</div>
+      <div class="card accent">
+        <div class="field"><label>Applicant Name</label><input type="text" id="pname" placeholder="From planning listing"></div>
+        <div class="field"><label>Address</label><input type="text" id="paddr" placeholder="Property address"></div>
+        <div class="field"><label>Application Type</label>
+          <select id="papptype"><option>Extension</option><option>New Build</option><option>Renovation</option><option>Commercial</option></select>
+        </div>
+        <button class="btn btp" style="width:100%;justify-content:center" onclick="genPlanLetter()">Generate Letter</button>
+        <div id="planout" style="margin-top:12px;display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUTREACH -->
+<div class="panel" id="p-outreach">
+  <div class="row-bet">
+    <div class="stitle" style="margin:0">Outreach Templates</div>
+    <select id="tflt" style="width:160px;padding:7px 10px;font-size:12px" onchange="drawTemplates()">
+      <option value="">All Templates</option>
+      <option value="social">Social Media</option>
+      <option value="planning">Planning</option>
+      <option value="followup">Follow-up</option>
+      <option value="quote">Quote</option>
+      <option value="won">Job Won</option>
+    </select>
+  </div>
+  <div style="font-size:12px;color:#9DA0A4;margin-bottom:14px">Click a template to expand. Fill in the personalise section below to customise.</div>
+  <div id="tgrid"></div>
+  <div class="mt16">
+    <div class="stitle">Quick Personalise</div>
+    <div class="card accent">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+        <div><label>Name</label><input type="text" id="pn" placeholder="e.g. John" oninput="updatePers()"></div>
+        <div><label>Job Type</label><input type="text" id="pj" placeholder="e.g. bathroom reno" oninput="updatePers()"></div>
+        <div><label>Price</label><input type="text" id="pp2" placeholder="e.g. €1,200–€1,600" oninput="updatePers()"></div>
+      </div>
+      <div class="field"><label>Personalised Message</label><textarea id="persout" rows="5" placeholder="Select a template above then customise here"></textarea></div>
+      <div class="row-end"><button class="btn btp btsm" onclick="copyPers()">Copy Message</button></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+var _leads = [];
+var _src = 'Facebook Groups';
+var _lastResult = null;
+var _selTpl = null;
+
+function loadLeads(){
+  try{var s=localStorage.getItem('ecc_leads');if(s)_leads=JSON.parse(s);}catch(e){_leads=[];}
+}
+function saveLeads(){
+  try{localStorage.setItem('ecc_leads',JSON.stringify(_leads));}catch(e){}
+  document.getElementById('lcount').textContent=_leads.length;
+  updHdr();
+}
+
+function updHdr(){
+  document.getElementById('h-leads').textContent=_leads.length;
+  var tot=_leads.reduce(function(s,l){return s+((l.qlo+l.qhi)/2);},0);
+  document.getElementById('h-val').textContent='€'+Math.round(tot).toLocaleString();
+  document.getElementById('h-won').textContent=_leads.filter(function(l){return l.status==='won';}).length;
+  document.getElementById('lcount').textContent=_leads.length;
+}
+
+function goTab(id,btn){
+  var panels=document.querySelectorAll('.panel');
+  for(var i=0;i<panels.length;i++)panels[i].classList.remove('on');
+  var btns=document.querySelectorAll('.tbtn');
+  for(var i=0;i<btns.length;i++)btns[i].classList.remove('on');
+  document.getElementById('p-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='leads')drawLeads();
+  if(id==='planning')drawPlanning();
+  if(id==='outreach')drawTemplates();
+}
+
+function pickSrc(el,name){
+  var chips=document.querySelectorAll('.chips .chip');
+  for(var i=0;i<chips.length;i++)chips[i].classList.remove('on');
+  el.classList.add('on');
+  _src=name;
+}
+
+function clearP(){
+  document.getElementById('desc').value='';
+  document.getElementById('loc').value='';
+  document.getElementById('jtype').value='';
+  document.getElementById('pp').style.display='flex';
+  document.getElementById('pl').style.display='none';
+  document.getElementById('pr').style.display='none';
+  document.getElementById('savewrap').style.display='none';
+  _lastResult=null;
+}
+
+function runPrice(){
+  var desc=document.getElementById('desc').value.trim();
+  if(!desc){alert('Please paste a job description first.');return;}
+  var loc=document.getElementById('loc').value.trim();
+  var jt=document.getElementById('jtype').value;
+
+  document.getElementById('pp').style.display='none';
+  document.getElementById('pr').style.display='none';
+  document.getElementById('pl').style.display='block';
+  document.getElementById('savewrap').style.display='none';
+
+  var prompt='You are an expert property maintenance pricing assistant for the Irish market.\n\nSource: '+_src+'\nLocation: '+(loc||'Ireland')+'\nJob Type Hint: '+(jt||'Auto-detect')+'\nJob Description: '+desc+'\n\nRespond ONLY with a JSON object, no markdown, no backticks, nothing else:\n{"jobType":"detected type","summary":"one sentence","complexity":"Low|Medium|High","estimatedHours":"e.g. 4-6","labourCost":"e.g. €400-€600","materialsCost":"e.g. €150-€250","quoteLow":550,"quoteHigh":850,"urgency":"Low|Medium|High","flags":["any red flags"],"responseMessage":"2-3 sentence ready-to-send response. Professional and warm. No asterisks."}';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    document.getElementById('pl').style.display='none';
+    var txt=(data.content&&data.content[0])?data.content[0].text:'';
+    try{
+      var i=txt.indexOf('{'),j=txt.lastIndexOf('}');
+      var res=JSON.parse(txt.substring(i,j+1));
+      _lastResult={res:res,desc:desc,loc:loc};
+      showResult(res);
+    }catch(e){
+      document.getElementById('pr').innerHTML='<div style="color:#9DA0A4;padding:20px;text-align:center">Could not parse response. Please try again.</div>';
+      document.getElementById('pr').style.display='block';
+    }
+  })
+  .catch(function(){
+    document.getElementById('pl').style.display='none';
+    document.getElementById('pr').innerHTML='<div style="color:#E74C3C;padding:20px;text-align:center">Connection error. Please try again.</div>';
+    document.getElementById('pr').style.display='block';
+  });
+}
+
+function showResult(r){
+  var cc=r.complexity==='High'?'#E74C3C':r.complexity==='Medium'?'#F39C12':'#2ECC71';
+  var uc=r.urgency==='High'?'#E74C3C':r.urgency==='Medium'?'#F39C12':'#2ECC71';
+  var flags='';
+  if(r.flags&&r.flags.length){flags=r.flags.map(function(f){return '<div style="font-size:12px;color:#F39C12;padding:2px 0">⚠ '+f+'</div>';}).join('');}
+  var html='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">';
+  html+='<div><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;font-weight:700">'+r.jobType+'</div><div style="font-size:12px;color:#9DA0A4;margin-top:2px">'+r.summary+'</div></div>';
+  html+='<div style="text-align:right"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:24px;font-weight:700;color:#E8620A">€'+r.quoteLow+'–€'+r.quoteHigh+'</div><div style="font-size:11px;color:#6B6E72">Quote Range</div></div>';
+  html+='</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
+  html+='<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase;letter-spacing:0.5px">Complexity</div><div style="font-size:14px;font-weight:600;color:'+cc+';margin-top:2px">'+r.complexity+'</div></div>';
+  html+='<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase;letter-spacing:0.5px">Est. Hours</div><div style="font-size:14px;font-weight:600;margin-top:2px">'+r.estimatedHours+'</div></div>';
+  html+='<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase;letter-spacing:0.5px">Urgency</div><div style="font-size:14px;font-weight:600;color:'+uc+';margin-top:2px">'+r.urgency+'</div></div>';
+  html+='</div>';
+  html+='<div style="margin-bottom:14px"><div class="pr"><span style="color:#9DA0A4">Labour</span><span>'+r.labourCost+'</span></div><div class="pr"><span style="color:#9DA0A4">Materials</span><span>'+r.materialsCost+'</span></div><div class="pr tot"><span>Total Range</span><span>€'+r.quoteLow+'–€'+r.quoteHigh+'</span></div></div>';
+  if(flags)html+='<div style="margin-bottom:12px">'+flags+'</div>';
+  html+='<div class="aibox"><div class="aihdr"><span class="aiico">A</span>Ready-to-Send Response</div>';
+  html+='<div class="aiq" id="rmsg">'+r.responseMessage+'</div>';
+  html+='<div style="margin-top:10px"><button class="btn btg btsm" onclick="cpyMsg()">Copy Message</button></div></div>';
+  document.getElementById('pr').innerHTML=html;
+  document.getElementById('pr').style.display='block';
+  document.getElementById('savewrap').style.display='block';
+}
+
+function cpyMsg(){
+  var el=document.getElementById('rmsg');
+  if(el)navigator.clipboard.writeText(el.textContent).then(function(){notif('Copied!');});
+}
+
+function saveLead(){
+  if(!_lastResult)return;
+  var r=_lastResult.res;
+  _leads.push({id:Date.now(),date:new Date().toISOString(),src:_src,desc:_lastResult.desc.substring(0,200),loc:_lastResult.loc||'Unknown',jtype:r.jobType,qlo:r.quoteLow,qhi:r.quoteHigh,msg:r.responseMessage,status:'new'});
+  saveLeads();
+  document.getElementById('savewrap').style.display='none';
+  notif('Lead saved!');
+}
+
+function drawLeads(){
+  var srch=(document.getElementById('lsrch').value||'').toLowerCase();
+  var flt=document.getElementById('lflt').value;
+  var fil=_leads.filter(function(l){
+    return(!flt||l.status===flt)&&(!srch||l.desc.toLowerCase().indexOf(srch)>=0||((l.loc||'').toLowerCase().indexOf(srch)>=0)||((l.jtype||'').toLowerCase().indexOf(srch)>=0));
+  });
+  var tot=_leads.reduce(function(s,l){return s+((l.qlo+l.qhi)/2);},0);
+  var won=_leads.filter(function(l){return l.status==='won';}).length;
+  document.getElementById('s-tot').textContent=_leads.length;
+  document.getElementById('s-val').textContent='€'+Math.round(tot).toLocaleString();
+  document.getElementById('s-won').textContent=won;
+  document.getElementById('s-cvr').textContent=_leads.length?Math.round(won/_leads.length*100)+'%':'0%';
+  var tb=document.getElementById('ltbody');
+  if(!fil.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:#6B6E72">No leads found.</td></tr>';return;}
+  tb.innerHTML=fil.map(function(l){
+    var d=new Date(l.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+    var bc='b-'+l.status;
+    return '<tr><td style="color:#9DA0A4;font-size:12px;white-space:nowrap">'+d+'</td><td style="font-size:11px;color:#9DA0A4">'+(l.src||'')+'</td><td><div style="color:#F0F1F2;max-width:220px;font-size:12px">'+l.desc.substring(0,80)+'...</div><div style="font-size:11px;color:#E8620A;margin-top:2px">'+(l.jtype||'')+'</div></td><td style="font-size:12px;color:#9DA0A4">'+(l.loc||'—')+'</td><td style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:600;color:#E8620A">€'+l.qlo+'–€'+l.qhi+'</td><td><span class="bdg '+bc+'">'+l.status+'</span></td><td><select style="padding:4px 6px;font-size:11px;width:85px;margin-bottom:4px" onchange="setStatus('+l.id+',this.value)"><option value="new" '+(l.status==='new'?'selected':'')+'>New</option><option value="quoted" '+(l.status==='quoted'?'selected':'')+'>Quoted</option><option value="won" '+(l.status==='won'?'selected':'')+'>Won</option><option value="lost" '+(l.status==='lost'?'selected':'')+'>Lost</option></select><br><button class="btn btd btsm" onclick="delLead('+l.id+')">Del</button></td></tr>';
+  }).join('');
+}
+
+function setStatus(id,val){
+  var l=_leads.find(function(x){return x.id===id;});
+  if(l){l.status=val;saveLeads();drawLeads();}
+}
+function delLead(id){
+  if(!confirm('Delete this lead?'))return;
+  _leads=_leads.filter(function(x){return x.id!==id;});
+  saveLeads();drawLeads();
+}
+
+var _pdata=[
+  {addr:'14 Beechwood Rd, Navan',app:'Murphy, Patrick',type:'Extension',county:'Meath',date:'2026-05-18'},
+  {addr:'Kilmessan Cross, Kilmessan',app:"O'Brien, Claire",type:'New Build',county:'Meath',date:'2026-05-17'},
+  {addr:'22 The Crescent, Trim',app:'Walsh, James',type:'Renovation',county:'Meath',date:'2026-05-16'},
+  {addr:'7 Oakdale Ave, Drogheda',app:'Reilly, Sinead',type:'Extension',county:'Louth',date:'2026-05-18'},
+  {addr:'Dundalk Road, Ardee',app:'Flanagan, Thomas',type:'New Build',county:'Louth',date:'2026-05-14'},
+  {addr:'3 Manor Park, Celbridge',app:'Brennan, Aoife',type:'Extension',county:'Kildare',date:'2026-05-17'},
+  {addr:'Newbridge Road, Naas',app:"O'Reilly, Michael",type:'Renovation',county:'Kildare',date:'2026-05-16'},
+  {addr:'15 Hazel Grove, Cavan Town',app:'Smith, Bernadette',type:'Extension',county:'Cavan',date:'2026-05-15'},
+  {addr:'44 Ashbourne Drive, Swords',app:'Kelly, Fiona',type:'Extension',county:'Dublin',date:'2026-05-18'},
+  {addr:'Blanchardstown Village',app:'Ryan Properties Ltd',type:'Commercial',county:'Dublin',date:'2026-05-17'},
+  {addr:'12 Malahide Rd, Portmarnock',app:'Lynch, Declan',type:'Renovation',county:'Dublin',date:'2026-05-15'},
+  {addr:'Rathfarnham Castle Est.',app:'Heritage Trust',type:'Renovation',county:'Dublin',date:'2026-05-14'},
+  {addr:'Bailieborough Rd, Virginia',app:'Kiernan, John',type:'New Build',county:'Cavan',date:'2026-05-13'},
+  {addr:'Ballybin Industrial Est.',app:'Conway Developments',type:'Commercial',county:'Meath',date:'2026-05-15'},
+];
+
+var _ptc={Extension:'pt-ext','New Build':'pt-new',Renovation:'pt-ren',Commercial:'pt-com'};
+
+function drawPlanning(){
+  var co=document.getElementById('pcounty').value;
+  var ty=document.getElementById('ptype').value;
+  var fil=_pdata.filter(function(p){return(!co||p.county===co)&&(!ty||p.type===ty);});
+  document.getElementById('ptbody').innerHTML=fil.map(function(p){
+    var d=new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+    return '<div class="prow"><div><div style="color:#F0F1F2">'+p.addr+'</div></div><div style="color:#9DA0A4">'+p.app+'</div><div><span class="ptag '+((_ptc[p.type])||'pt-com')+'">'+p.type+'</span></div><div style="color:#9DA0A4">'+p.county+'</div><div><button class="btn btg btsm" onclick="fillPlan(\''+p.app.replace(/'/g,"\\'")+'\\',\\''+p.addr+'\\',\\''+p.type+'\')">Contact</button></div></div>';
+  }).join('')||'<div style="padding:30px;text-align:center;color:#6B6E72">No matching applications.</div>';
+  var cnts={};
+  _pdata.forEach(function(p){cnts[p.county]=(cnts[p.county]||0)+1;});
+  var entries=Object.keys(cnts).map(function(k){return[k,cnts[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var mx=entries[0]?entries[0][1]:1;
+  document.getElementById('cbars').innerHTML=entries.map(function(e){
+    return '<div class="cbar"><div class="cn">'+e[0]+'</div><div class="ct"><div class="cf" style="width:'+Math.round(e[1]/mx*100)+'%"></div></div><div class="cc">'+e[1]+'</div></div>';
+  }).join('');
+}
+
+function fillPlan(app,addr,type){
+  document.getElementById('pname').value=app;
+  document.getElementById('paddr').value=addr;
+  document.getElementById('papptype').value=type;
+}
+
+function genPlanLetter(){
+  var name=document.getElementById('pname').value.trim();
+  var addr=document.getElementById('paddr').value.trim();
+  var type=document.getElementById('papptype').value;
+  if(!name||!addr){alert('Please fill in applicant name and address.');return;}
+  var out=document.getElementById('planout');
+  out.style.display='block';
+  out.innerHTML='<div class="dots" style="padding:12px"><span></span><span></span><span></span></div>';
+  var prompt='Write a short professional outreach letter for an Irish property maintenance contractor. The applicant '+name+' has filed a '+type+' planning application for '+addr+'. Write 3-4 sentences introducing EASY Property Services, noting we saw their planning application, offering a free consultation and quote. Warm, professional tone. No markdown or asterisks. Sign off: EASY Property Services, Dublin/Meath.';
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var txt=(data.content&&data.content[0])?data.content[0].text:'Could not generate.';
+    out.innerHTML='<div class="aibox"><div class="aihdr"><span class="aiico">A</span>Generated Letter</div><div class="aiq" id="planmsg">'+txt+'</div><div style="margin-top:10px"><button class="btn btg btsm" onclick="navigator.clipboard.writeText(document.getElementById(\'planmsg\').textContent).then(function(){notif(\'Copied!\')})">Copy</button></div></div>';
+  })
+  .catch(function(){out.innerHTML='<div style="color:#E74C3C;font-size:12px;padding:8px">Error — try again.</div>';});
+}
+
+var _tpls=[
+  {id:'t1',cat:'social',name:'First Contact — Social Media',tag:'Social Media',prev:"Hi there! Saw your post looking for...",body:"Hi [NAME]! Saw your post looking for help with [JOB TYPE]. We're a local property maintenance company covering Meath, Dublin & surrounding counties.\n\nWe can get someone out to have a look and give you a proper quote — no obligation. Are you still looking to get this sorted?\n\nFeel free to DM or call us directly."},
+  {id:'t2',cat:'social',name:'Fast Response — Marketplace',tag:'Marketplace',prev:"Hey, just seen your listing...",body:"Hey [NAME], just seen your listing. We cover [LOCATION] and this is exactly the type of work we do.\n\nCan have someone over to quote within 48 hours. What's the best way to reach you?"},
+  {id:'t3',cat:'planning',name:'Planning Application Letter',tag:'Planning',prev:"Dear [NAME], I noticed your recent planning application...",body:"Dear [NAME],\n\nI hope this message finds you well. I noticed your recent planning application for [JOB TYPE] at [ADDRESS] and wanted to reach out.\n\nAt EASY Property Services, we specialise in exactly this type of project across Co. Meath, Dublin, and Louth. We'd be happy to offer a free site consultation and a detailed quote before your project gets underway.\n\nIf you'd like to chat, please don't hesitate to get in touch.\n\nKind regards,\nEASY Property Services"},
+  {id:'t4',cat:'followup',name:'Follow-up — No Reply',tag:'Follow-up',prev:"Just following up on my message...",body:"Hi [NAME], just following up on my message from earlier this week about your [JOB TYPE].\n\nWe still have availability and would love to help. Even a quick call to discuss what you're looking for would be great.\n\nNo worries if you've gone with someone else — just let us know either way!"},
+  {id:'t5',cat:'quote',name:'Quote Delivery',tag:'Quote',prev:"Hi [NAME], thanks for your time today...",body:"Hi [NAME], thanks for your time today.\n\nAs discussed, here's our quote for the [JOB TYPE]:\n\nEstimated price: [PRICE]\n\nThis includes all labour and standard materials. Any extras will be agreed with you beforehand.\n\nTo proceed, just reply here or give us a call. We can confirm a start date within 24 hours.\n\nThanks again!\nEASY Property Services"},
+  {id:'t6',cat:'followup',name:'Follow-up After Quote',tag:'Follow-up',prev:"Hi [NAME], just checking in on the quote...",body:"Hi [NAME], just checking in on the quote we sent over for the [JOB TYPE].\n\nAny questions at all, we're happy to talk through it. We can also look at the scope if the budget needs adjusting.\n\nHope to hear from you!"},
+  {id:'t7',cat:'won',name:'Job Confirmed Response',tag:'Job Won',prev:"Brilliant, great to have you confirmed...",body:"Brilliant [NAME], great to have you confirmed!\n\nWe'll be in touch shortly with the start date and a brief rundown of how the job will run day-to-day.\n\nLooking forward to working with you!\nEASY Property Services"},
+  {id:'t8',cat:'social',name:'Done Deal / Adverts Response',tag:'Done Deal',prev:"Hi, saw your ad looking for a contractor...",body:"Hi [NAME], saw your ad looking for a contractor for [JOB TYPE].\n\nWe're a fully insured local firm with experience in exactly this type of work. Happy to come out and give you a free no-obligation quote.\n\nWhat area are you in? We cover most of Meath, Louth, Dublin & Kildare."},
+];
+
+function drawTemplates(){
+  var flt=document.getElementById('tflt').value;
+  var fil=flt?_tpls.filter(function(t){return t.cat===flt;}):_tpls;
+  document.getElementById('tgrid').innerHTML=fil.map(function(t){
+    return '<div class="tcard'+((_selTpl===t.id)?' on':'')+'\" id="tc-'+t.id+'" onclick="pickTpl(\''+t.id+'\')"><div class="tname">'+t.name+'</div><div class="ttag">'+t.tag+'</div><div class="tprev">'+t.prev+'</div><div class="tbody">'+t.body.replace(/\n/g,'<br>')+'</div><div class="tbns"><button class="btn btg btsm" onclick="event.stopPropagation();useTpl(\''+t.id+'\')">Use Template</button><button class="btn btp btsm" onclick="event.stopPropagation();cpyTpl(\''+t.id+'\')">Copy</button></div></div>';
+  }).join('');
+}
+
+function pickTpl(id){_selTpl=(_selTpl===id)?null:id;drawTemplates();}
+function cpyTpl(id){var t=_tpls.find(function(x){return x.id===id;});if(t)navigator.clipboard.writeText(t.body).then(function(){notif('Copied!');});}
+function useTpl(id){var t=_tpls.find(function(x){return x.id===id;});if(t){document.getElementById('persout').value=t.body;}}
+function updatePers(){}
+function copyPers(){
+  var txt=document.getElementById('persout').value;
+  var n=document.getElementById('pn').value;
+  var j=document.getElementById('pj').value;
+  var p=document.getElementById('pp2').value;
+  if(n)txt=txt.replace(/\[NAME\]/g,n);
+  if(j)txt=txt.replace(/\[JOB TYPE\]/g,j);
+  if(p)txt=txt.replace(/\[PRICE\]/g,p);
+  navigator.clipboard.writeText(txt).then(function(){notif('Copied!');});
+}
+
+function notif(msg){
+  var el=document.createElement('div');
+  el.className='notif';
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},2200);
+}
+
+// BOOT
+loadLeads();
+updHdr();
+drawPlanning();
+drawTemplates();
+document.getElementById('h-date').textContent=new Date().toLocaleDateString('en-IE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+</script>
+</body>
+</html>
