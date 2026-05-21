@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EASY Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:#1A1B1C;color:#F0F1F2;min-height:100vh;font-size:14px}
+header{background:#2B2D2F;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:1px}
+.logo em{color:#E8620A;font-style:normal}
+.hstats{display:flex;gap:24px}
+.hstat .v{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:#E8620A;text-align:center}
+.hstat .l{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:#9DA0A4;text-align:center}
+nav{display:flex;background:#2B2D2F;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 24px;overflow-x:auto}
+.tb{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;padding:12px 18px;background:none;border:none;color:#9DA0A4;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tb:hover{color:#F0F1F2}
+.tb.on{color:#E8620A;border-bottom-color:#E8620A}
+.main{padding:20px 24px;max-width:1400px;margin:0 auto}
+.pnl{display:none}
+.pnl.on{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:750px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
+.card{background:#222426;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:18px 20px}
+.ca{border-color:rgba(232,98,10,0.35)}
+.ct{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;color:#9DA0A4;margin-bottom:14px}
+.stat{background:#222426;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 18px}
+.stat .v{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:#E8620A;line-height:1}
+.stat .l{font-size:12px;color:#9DA0A4;margin-top:4px}
+label{font-size:12px;color:#9DA0A4;margin-bottom:5px;display:block;font-weight:500}
+input,textarea,select{background:#1A1B1C;border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#F0F1F2;font-family:'Barlow',sans-serif;font-size:13px;padding:9px 12px;width:100%;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#E8620A}
+textarea{resize:vertical;min-height:90px}
+select option{background:#2B2D2F}
+.f{margin-bottom:14px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:9px 18px;border-radius:7px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.bp{background:#E8620A;color:#fff}
+.bg{background:transparent;color:#9DA0A4;border:1px solid rgba(255,255,255,0.1)}
+.bs{background:rgba(46,204,113,0.15);color:#2ECC71;border:1px solid rgba(46,204,113,0.3)}
+.bd{background:rgba(231,76,60,0.15);color:#E74C3C;border:1px solid rgba(231,76,60,0.3)}
+.sm{padding:5px 10px;font-size:11px}
+.re{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.rb{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.chip{font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#9DA0A4;transition:all 0.15s}
+.chip.on{border-color:#E8620A;background:rgba(232,98,10,0.2);color:#E8620A}
+.aibox{background:rgba(232,98,10,0.05);border:1px solid rgba(232,98,10,0.35);border-radius:10px;padding:16px 18px;margin-top:14px}
+.aih{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:#E8620A;margin-bottom:8px}
+.aiq{background:#1A1B1C;border-left:3px solid #E8620A;padding:12px 14px;border-radius:0 7px 7px 0;font-size:13px;line-height:1.6;color:#F0F1F2;font-style:italic}
+.bdg{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.bn{background:rgba(52,152,219,0.2);color:#3498DB}
+.bq{background:rgba(243,156,18,0.2);color:#F39C12}
+.bw{background:rgba(46,204,113,0.2);color:#2ECC71}
+.bl{background:rgba(231,76,60,0.2);color:#E74C3C}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#6B6E72;border-bottom:1px solid rgba(255,255,255,0.08)}
+td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.pr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
+.pt{border-bottom:none;border-top:1px solid rgba(255,255,255,0.1);margin-top:4px;padding-top:10px;font-weight:600;font-size:15px;color:#E8620A}
+.prow{display:grid;grid-template-columns:2fr 1fr 0.8fr 0.8fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;font-size:12px}
+.phdr{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#6B6E72;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+.ptag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.pe{background:rgba(52,152,219,0.15);color:#3498DB}
+.pn2{background:rgba(46,204,113,0.15);color:#2ECC71}
+.pr2{background:rgba(243,156,18,0.15);color:#F39C12}
+.pc{background:rgba(155,89,182,0.15);color:#b97ddd}
+.tcard{background:#282A2C;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:15px;cursor:pointer;margin-bottom:10px}
+.tcard.on{border-color:#E8620A;background:rgba(232,98,10,0.05)}
+.tn{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:#F0F1F2;margin-bottom:3px}
+.tt{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase;background:rgba(232,98,10,0.12);color:#E8620A;display:inline-block;margin-bottom:7px}
+.tp{font-size:12px;color:#9DA0A4;line-height:1.5}
+.tbody2{display:none;font-size:13px;line-height:1.7;color:#F0F1F2;background:#1A1B1C;padding:12px 14px;border-radius:7px;border:1px solid rgba(255,255,255,0.08);margin-top:12px;white-space:pre-wrap}
+.tcard.on .tbody2{display:block}
+.tbns{display:none;gap:8px;margin-top:10px}
+.tcard.on .tbns{display:flex}
+.cbar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cn{font-size:12px;color:#9DA0A4;width:65px;flex-shrink:0}
+.ctrack{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.cfill{height:100%;background:#E8620A;border-radius:3px}
+.ccount{font-size:12px;color:#9DA0A4;width:24px;text-align:right}
+.dots{display:inline-flex;gap:3px;align-items:center}
+.dots span{width:4px;height:4px;border-radius:50%;background:#E8620A;animation:dp 1.2s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:0.2s}
+.dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dp{0%,80%,100%{opacity:0.3;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
+.ntf{position:fixed;bottom:24px;right:24px;background:#E8620A;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;pointer-events:none}
+.stitle{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:600;margin-bottom:14px}
+.nbdg{background:#E8620A;color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;vertical-align:middle}
+.wa{background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:#F39C12;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><em>EASY</em> COMMAND CENTRE</div>
+  <div class="hstats">
+    <div class="hstat"><div class="v" id="hl">0</div><div class="l">Leads</div></div>
+    <div class="hstat"><div class="v" id="hv">€0</div><div class="l">Quoted</div></div>
+    <div class="hstat"><div class="v" id="hw">0</div><div class="l">Won</div></div>
+  </div>
+  <div style="font-size:12px;color:#9DA0A4" id="hd"></div>
+</header>
+
+<nav>
+  <button class="tb on" id="tab-pricer">AI Pricer</button>
+  <button class="tb" id="tab-leads">Lead Log <span class="nbdg" id="lc">0</span></button>
+  <button class="tb" id="tab-planning">Planning Alerts</button>
+  <button class="tb" id="tab-outreach">Outreach Templates</button>
+</nav>
+
+<div class="main">
+
+<div class="pnl on" id="pnl-pricer">
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card ca">
+        <div class="ct">New Lead — Paste &amp; Price</div>
+        <div class="f">
+          <label>Source</label>
+          <div class="chips" id="chips">
+            <div class="chip on" data-src="Facebook Groups">Facebook Groups</div>
+            <div class="chip" data-src="FB Marketplace">FB Marketplace</div>
+            <div class="chip" data-src="Done Deal">Done Deal</div>
+            <div class="chip" data-src="MyHome.ie">MyHome.ie</div>
+            <div class="chip" data-src="Adverts.ie">Adverts.ie</div>
+            <div class="chip" data-src="Community Group">Community Group</div>
+            <div class="chip" data-src="TikTok">TikTok</div>
+            <div class="chip" data-src="Instagram">Instagram</div>
+            <div class="chip" data-src="Referral">Referral</div>
+          </div>
+        </div>
+        <div class="r2">
+          <div class="f" style="margin:0"><label>Location</label><input type="text" id="loc" placeholder="e.g. Navan, Co. Meath"></div>
+          <div class="f" style="margin:0"><label>Job Type</label>
+            <select id="jt">
+              <option value="">Auto-detect</option>
+              <option>Painting &amp; Decorating</option>
+              <option>Plastering</option>
+              <option>Tiling</option>
+              <option>Bathroom Fit-out</option>
+              <option>Kitchen Fit-out</option>
+              <option>Extension / Build</option>
+              <option>Roofing</option>
+              <option>Guttering / Fascia</option>
+              <option>Garden / Landscaping</option>
+              <option>Flooring</option>
+              <option>Electrical</option>
+              <option>Plumbing</option>
+              <option>General Maintenance</option>
+              <option>Cleaning</option>
+            </select>
+          </div>
+        </div>
+        <div class="f mt12"><label>Paste job description</label><textarea id="desc" rows="5" placeholder="Paste the full post or message from Facebook, Done Deal, etc..."></textarea></div>
+        <div class="re">
+          <button class="btn bg sm" id="btn-clear">Clear</button>
+          <button class="btn bp" id="btn-price">&#9889; Price This Job</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="min-height:300px">
+        <div class="ct">AI Pricing &amp; Response</div>
+        <div id="pp" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0;text-align:center;color:#6B6E72">
+          <div style="font-size:32px;margin-bottom:10px;opacity:0.3">&#9889;</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;color:#9DA0A4">Paste a job and hit Price This Job</div>
+        </div>
+        <div id="pl" style="display:none;padding:50px 0;text-align:center">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div style="margin-top:10px;font-size:13px;color:#9DA0A4">Analysing...</div>
+        </div>
+        <div id="pr" style="display:none"></div>
+      </div>
+      <div id="sw" style="display:none;margin-top:10px">
+        <button class="btn bs" id="btn-save" style="width:100%;justify-content:center">&#10003; Save to Lead Log</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="pnl-leads">
+  <div class="rb">
+    <div class="stitle" style="margin:0">Lead Log</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="lsrch" placeholder="Search..." style="width:160px;padding:7px 10px">
+      <select id="lflt" style="width:120px;padding:7px 10px">
+        <option value="">All Status</option>
+        <option value="new">New</option>
+        <option value="quoted">Quoted</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+    </div>
+  </div>
+  <div class="g4 mt16">
+    <div class="stat"><div class="v" id="st">0</div><div class="l">Total Leads</div></div>
+    <div class="stat"><div class="v" id="sv">€0</div><div class="l">Total Quoted</div></div>
+    <div class="stat"><div class="v" id="sw2">0</div><div class="l">Jobs Won</div></div>
+    <div class="stat"><div class="v" id="sc">0%</div><div class="l">Conversion</div></div>
+  </div>
+  <div class="card mt16" style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Date</th><th>Source</th><th>Job</th><th>Location</th><th>Quote</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="ltb"><tr><td colspan="7" style="text-align:center;padding:40px;color:#6B6E72">No leads yet. Use the AI Pricer to add your first lead.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pnl" id="pnl-planning">
+  <div class="g2" style="align-items:start;gap:20px">
+    <div>
+      <div class="wa">&#9889; Planning data covers Meath, Dublin, Louth, Cavan, Kildare councils</div>
+      <div class="stitle">Recent Applications</div>
+      <div class="card" style="padding:14px 16px">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <select id="pc" style="width:auto;padding:6px 10px;font-size:12px">
+            <option value="">All Counties</option>
+            <option>Meath</option><option>Dublin</option><option>Louth</option><option>Cavan</option><option>Kildare</option>
+          </select>
+          <select id="pt2" style="width:auto;padding:6px 10px;font-size:12px">
+            <option value="">All Types</option>
+            <option>Extension</option><option>New Build</option><option>Renovation</option><option>Commercial</option>
+          </select>
+          <button class="btn bg sm" id="btn-pfilter">Filter</button>
+        </div>
+        <div class="prow phdr"><div>Address</div><div>Applicant</div><div>Type</div><div>County</div><div>Action</div></div>
+        <div id="ptb"></div>
+      </div>
+    </div>
+    <div>
+      <div class="stitle">Volume by County</div>
+      <div class="card" style="margin-bottom:16px"><div id="cb"></div></div>
+      <div class="stitle">Generate Outreach Letter</div>
+      <div class="card ca">
+        <div class="f"><label>Applicant Name</label><input type="text" id="pna" placeholder="From planning listing"></div>
+        <div class="f"><label>Address</label><input type="text" id="pad" placeholder="Property address"></div>
+        <div class="f"><label>Type</label>
+          <select id="pat"><option>Extension</option><option>New Build</option><option>Renovation</option><option>Commercial</option></select>
+        </div>
+        <button class="btn bp" id="btn-pletter" style="width:100%;justify-content:center">Generate Letter</button>
+        <div id="po" style="margin-top:12px;display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pnl" id="pnl-outreach">
+  <div class="rb">
+    <div class="stitle" style="margin:0">Outreach Templates</div>
+    <select id="tflt" style="width:160px;padding:7px 10px;font-size:12px">
+      <option value="">All Templates</option>
+      <option value="social">Social Media</option>
+      <option value="planning">Planning</option>
+      <option value="followup">Follow-up</option>
+      <option value="quote">Quote</option>
+      <option value="won">Job Won</option>
+    </select>
+  </div>
+  <div style="font-size:12px;color:#9DA0A4;margin-bottom:14px">Click a template to expand. Fill in the section below to personalise.</div>
+  <div id="tg"></div>
+  <div class="mt16">
+    <div class="stitle">Quick Personalise</div>
+    <div class="card ca">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+        <div><label>Name</label><input type="text" id="pn" placeholder="e.g. John"></div>
+        <div><label>Job Type</label><input type="text" id="pj" placeholder="e.g. bathroom reno"></div>
+        <div><label>Price</label><input type="text" id="pp3" placeholder="e.g. €1,200"></div>
+      </div>
+      <div class="f"><label>Message</label><textarea id="pout" rows="5" placeholder="Select a template above then edit here"></textarea></div>
+      <div class="re"><button class="btn bp sm" id="btn-cpypers">Copy Message</button></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function() {
+
+var leads = [];
+var src = 'Facebook Groups';
+var lastRes = null;
+var selTpl = null;
+
+var TPLS = [
+  {id:'t1',cat:'social',name:'First Contact — Social Media',tag:'Social Media',prev:'Hi there! Saw your post looking for...',body:'Hi [NAME]! Saw your post looking for help with [JOB TYPE]. We\'re a local property maintenance company covering Meath, Dublin & surrounding counties.\n\nWe can get someone out to have a look and give you a proper quote — no obligation. Are you still looking to get this sorted?\n\nFeel free to DM or call us directly.'},
+  {id:'t2',cat:'social',name:'Fast Response — Marketplace',tag:'Marketplace',prev:'Hey, just seen your listing...',body:'Hey [NAME], just seen your listing. We cover [LOCATION] and this is exactly the type of work we do.\n\nCan have someone over to quote within 48 hours. What\'s the best way to reach you?'},
+  {id:'t3',cat:'planning',name:'Planning Application Letter',tag:'Planning',prev:'Dear [NAME], I noticed your planning application...',body:'Dear [NAME],\n\nI hope this message finds you well. I noticed your recent planning application for [JOB TYPE] at [ADDRESS] and wanted to reach out.\n\nAt EASY Property Services we specialise in exactly this type of project across Co. Meath, Dublin, and Louth. We\'d be happy to offer a free site consultation and detailed quote before your project gets underway.\n\nIf you\'d like to chat, please don\'t hesitate to get in touch.\n\nKind regards,\nEASY Property Services'},
+  {id:'t4',cat:'followup',name:'Follow-up — No Reply',tag:'Follow-up',prev:'Just following up on my message...',body:'Hi [NAME], just following up on my message from earlier this week about your [JOB TYPE].\n\nWe still have availability and would love to help. Even a quick call to discuss what you\'re looking for would be great.\n\nNo worries if you\'ve gone with someone else — just let us know either way!'},
+  {id:'t5',cat:'quote',name:'Quote Delivery',tag:'Quote',prev:'Hi [NAME], thanks for your time today...',body:'Hi [NAME], thanks for your time today.\n\nAs discussed, here\'s our quote for the [JOB TYPE]:\n\nEstimated price: [PRICE]\n\nThis includes all labour and standard materials. Any extras agreed beforehand.\n\nTo proceed just reply or give us a call — we can confirm a start date within 24 hours.\n\nThanks!\nEASY Property Services'},
+  {id:'t6',cat:'followup',name:'Follow-up After Quote',tag:'Follow-up',prev:'Hi [NAME], just checking in on the quote...',body:'Hi [NAME], just checking in on the quote we sent over for the [JOB TYPE].\n\nAny questions at all, happy to talk it through. We can also adjust the scope if the budget needs flexibility.\n\nHope to hear from you!'},
+  {id:'t7',cat:'won',name:'Job Confirmed Response',tag:'Job Won',prev:'Brilliant, great to have you confirmed...',body:'Brilliant [NAME], great to have you confirmed!\n\nWe\'ll be in touch shortly with the start date and a rundown of how the job will progress.\n\nLooking forward to working with you!\nEASY Property Services'},
+  {id:'t8',cat:'social',name:'Done Deal / Adverts Response',tag:'Done Deal',prev:'Hi, saw your ad looking for a contractor...',body:'Hi [NAME], saw your ad looking for a contractor for [JOB TYPE].\n\nWe\'re a fully insured local firm with experience in exactly this type of work. Happy to come out and give you a free no-obligation quote.\n\nWhat area are you in? We cover Meath, Louth, Dublin & Kildare.'}
+];
+
+var PLAN = [
+  {addr:'14 Beechwood Rd, Navan',app:'Murphy, Patrick',type:'Extension',county:'Meath'},
+  {addr:'Kilmessan Cross, Kilmessan',app:'OBrien, Claire',type:'New Build',county:'Meath'},
+  {addr:'22 The Crescent, Trim',app:'Walsh, James',type:'Renovation',county:'Meath'},
+  {addr:'Ballybin Industrial Est.',app:'Conway Developments',type:'Commercial',county:'Meath'},
+  {addr:'7 Oakdale Ave, Drogheda',app:'Reilly, Sinead',type:'Extension',county:'Louth'},
+  {addr:'Dundalk Road, Ardee',app:'Flanagan, Thomas',type:'New Build',county:'Louth'},
+  {addr:'3 Manor Park, Celbridge',app:'Brennan, Aoife',type:'Extension',county:'Kildare'},
+  {addr:'Newbridge Road, Naas',app:'OReilly, Michael',type:'Renovation',county:'Kildare'},
+  {addr:'15 Hazel Grove, Cavan Town',app:'Smith, Bernadette',type:'Extension',county:'Cavan'},
+  {addr:'Bailieborough Rd, Virginia',app:'Kiernan, John',type:'New Build',county:'Cavan'},
+  {addr:'44 Ashbourne Drive, Swords',app:'Kelly, Fiona',type:'Extension',county:'Dublin'},
+  {addr:'Blanchardstown Village',app:'Ryan Properties Ltd',type:'Commercial',county:'Dublin'},
+  {addr:'12 Malahide Rd, Portmarnock',app:'Lynch, Declan',type:'Renovation',county:'Dublin'},
+  {addr:'Rathfarnham Castle Est.',app:'Heritage Trust',type:'Renovation',county:'Dublin'}
+];
+
+function loadLeads() {
+  try {
+    var s = localStorage.getItem('ecc2');
+    if (s) leads = JSON.parse(s);
+  } catch(e) { leads = []; }
+}
+
+function saveLeads() {
+  try { localStorage.setItem('ecc2', JSON.stringify(leads)); } catch(e) {}
+  updHdr();
+}
+
+function updHdr() {
+  var tot = 0;
+  var won = 0;
+  for (var i = 0; i < leads.length; i++) {
+    tot += (leads[i].qlo + leads[i].qhi) / 2;
+    if (leads[i].status === 'won') won++;
+  }
+  setText('hl', leads.length);
+  setText('hv', '€' + Math.round(tot).toLocaleString());
+  setText('hw', won);
+  setText('lc', leads.length);
+}
+
+function setText(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function getVal(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function show(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = 'block';
+}
+
+function hide(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+
+function notif(msg) {
+  var el = document.createElement('div');
+  el.className = 'ntf';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 2000);
+}
+
+// TABS
+var tabIds = ['pricer', 'leads', 'planning', 'outreach'];
+for (var ti = 0; ti < tabIds.length; ti++) {
+  (function(id) {
+    var btn = document.getElementById('tab-' + id);
+    if (btn) btn.addEventListener('click', function() { goTab(id); });
+  })(tabIds[ti]);
+}
+
+function goTab(id) {
+  for (var i = 0; i < tabIds.length; i++) {
+    var p = document.getElementById('pnl-' + tabIds[i]);
+    var b = document.getElementById('tab-' + tabIds[i]);
+    if (p) p.classList.remove('on');
+    if (b) b.classList.remove('on');
+  }
+  var pnl = document.getElementById('pnl-' + id);
+  var btn = document.getElementById('tab-' + id);
+  if (pnl) pnl.classList.add('on');
+  if (btn) btn.classList.add('on');
+  if (id === 'leads') drawLeads();
+  if (id === 'planning') drawPlanning();
+  if (id === 'outreach') drawTemplates();
+}
+
+// CHIPS
+var chipsEl = document.getElementById('chips');
+if (chipsEl) {
+  var chipEls = chipsEl.querySelectorAll('.chip');
+  for (var ci = 0; ci < chipEls.length; ci++) {
+    (function(chip) {
+      chip.addEventListener('click', function() {
+        for (var j = 0; j < chipEls.length; j++) chipEls[j].classList.remove('on');
+        chip.classList.add('on');
+        src = chip.getAttribute('data-src') || 'Facebook Groups';
+      });
+    })(chipEls[ci]);
+  }
+}
+
+// PRICER BUTTONS
+var btnClear = document.getElementById('btn-clear');
+if (btnClear) btnClear.addEventListener('click', function() {
+  document.getElementById('desc').value = '';
+  document.getElementById('loc').value = '';
+  document.getElementById('jt').value = '';
+  show('pp'); hide('pl'); hide('pr'); hide('sw');
+  lastRes = null;
+});
+
+var btnPrice = document.getElementById('btn-price');
+if (btnPrice) btnPrice.addEventListener('click', runPrice);
+
+var btnSave = document.getElementById('btn-save');
+if (btnSave) btnSave.addEventListener('click', saveLead);
+
+function runPrice() {
+  var desc = getVal('desc');
+  if (!desc) { alert('Please paste a job description first.'); return; }
+  var loc = getVal('loc');
+  var jt = getVal('jt');
+  hide('pp'); hide('pr'); show('pl'); hide('sw');
+
+  var prompt = 'You are an expert property maintenance pricing assistant for the Irish market.\n\nSource: ' + src + '\nLocation: ' + (loc || 'Ireland') + '\nJob Type Hint: ' + (jt || 'Auto-detect') + '\nJob Description: ' + desc + '\n\nRespond ONLY with a valid JSON object. No markdown, no backticks, no explanation — just the raw JSON:\n{"jobType":"string","summary":"string","complexity":"Low or Medium or High","estimatedHours":"string","labourCost":"string","materialsCost":"string","quoteLow":500,"quoteHigh":800,"urgency":"Low or Medium or High","flags":["string"],"responseMessage":"2-3 sentence professional warm response. No asterisks or markdown."}';
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 800,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    hide('pl');
+    var txt = '';
+    if (data.content && data.content[0] && data.content[0].text) txt = data.content[0].text;
+    var start = txt.indexOf('{');
+    var end = txt.lastIndexOf('}');
+    if (start === -1 || end === -1) { showErr('Could not parse response. Try again.'); return; }
+    try {
+      var res = JSON.parse(txt.substring(start, end + 1));
+      lastRes = { res: res, desc: desc, loc: loc };
+      showResult(res);
+    } catch(e) { showErr('Parse error. Try again.'); }
+  })
+  .catch(function() { hide('pl'); showErr('Connection error. Try again.'); });
+}
+
+function showErr(msg) {
+  var el = document.getElementById('pr');
+  if (el) { el.innerHTML = '<div style="color:#E74C3C;padding:20px;text-align:center">' + msg + '</div>'; el.style.display = 'block'; }
+}
+
+function showResult(r) {
+  var cc = r.complexity === 'High' ? '#E74C3C' : r.complexity === 'Medium' ? '#F39C12' : '#2ECC71';
+  var uc = r.urgency === 'High' ? '#E74C3C' : r.urgency === 'Medium' ? '#F39C12' : '#2ECC71';
+  var fl = '';
+  if (r.flags && r.flags.length) {
+    for (var i = 0; i < r.flags.length; i++) fl += '<div style="font-size:12px;color:#F39C12;padding:2px 0">&#9888; ' + r.flags[i] + '</div>';
+  }
+  var h = '';
+  h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">';
+  h += '<div><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:20px;font-weight:700">' + (r.jobType || '') + '</div>';
+  h += '<div style="font-size:12px;color:#9DA0A4;margin-top:2px">' + (r.summary || '') + '</div></div>';
+  h += '<div style="text-align:right"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:24px;font-weight:700;color:#E8620A">&#8364;' + r.quoteLow + '&#8211;&#8364;' + r.quoteHigh + '</div>';
+  h += '<div style="font-size:11px;color:#6B6E72">Quote Range</div></div></div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
+  h += '<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase">Complexity</div><div style="font-size:14px;font-weight:600;color:' + cc + ';margin-top:2px">' + (r.complexity || '') + '</div></div>';
+  h += '<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase">Est. Hours</div><div style="font-size:14px;font-weight:600;margin-top:2px">' + (r.estimatedHours || '') + '</div></div>';
+  h += '<div style="background:#1A1B1C;border-radius:7px;padding:10px 12px;border:1px solid rgba(255,255,255,0.07)"><div style="font-size:10px;color:#6B6E72;text-transform:uppercase">Urgency</div><div style="font-size:14px;font-weight:600;color:' + uc + ';margin-top:2px">' + (r.urgency || '') + '</div></div>';
+  h += '</div>';
+  h += '<div style="margin-bottom:14px">';
+  h += '<div class="pr"><span style="color:#9DA0A4">Labour</span><span>' + (r.labourCost || '') + '</span></div>';
+  h += '<div class="pr"><span style="color:#9DA0A4">Materials</span><span>' + (r.materialsCost || '') + '</span></div>';
+  h += '<div class="pr pt"><span>Total Range</span><span>&#8364;' + r.quoteLow + '&#8211;&#8364;' + r.quoteHigh + '</span></div></div>';
+  if (fl) h += '<div style="margin-bottom:12px">' + fl + '</div>';
+  h += '<div class="aibox"><div class="aih">&#9733; Ready-to-Send Response</div>';
+  h += '<div class="aiq" id="rmsg">' + (r.responseMessage || '') + '</div>';
+  h += '<div style="margin-top:10px"><button class="btn bg sm" id="btn-cpy">Copy Message</button></div></div>';
+  var prEl = document.getElementById('pr');
+  if (prEl) { prEl.innerHTML = h; prEl.style.display = 'block'; }
+  show('sw');
+  var cpyBtn = document.getElementById('btn-cpy');
+  if (cpyBtn) cpyBtn.addEventListener('click', function() {
+    var rmsg = document.getElementById('rmsg');
+    if (rmsg) navigator.clipboard.writeText(rmsg.textContent).then(function() { notif('Copied!'); });
+  });
+}
+
+function saveLead() {
+  if (!lastRes) return;
+  var r = lastRes.res;
+  leads.push({
+    id: Date.now(),
+    date: new Date().toISOString(),
+    src: src,
+    desc: lastRes.desc.substring(0, 200),
+    loc: lastRes.loc || 'Unknown',
+    jtype: r.jobType || '',
+    qlo: r.quoteLow || 0,
+    qhi: r.quoteHigh || 0,
+    status: 'new'
+  });
+  saveLeads();
+  hide('sw');
+  notif('Lead saved!');
+}
+
+// LEADS
+document.getElementById('lsrch').addEventListener('input', drawLeads);
+document.getElementById('lflt').addEventListener('change', drawLeads);
+
+function drawLeads() {
+  var srch = (document.getElementById('lsrch').value || '').toLowerCase();
+  var flt = document.getElementById('lflt').value;
+  var fil = [];
+  for (var i = 0; i < leads.length; i++) {
+    var l = leads[i];
+    var ms = !flt || l.status === flt;
+    var mt = !srch || (l.desc || '').toLowerCase().indexOf(srch) >= 0 || (l.loc || '').toLowerCase().indexOf(srch) >= 0 || (l.jtype || '').toLowerCase().indexOf(srch) >= 0;
+    if (ms && mt) fil.push(l);
+  }
+  var tot = 0, won = 0;
+  for (var i = 0; i < leads.length; i++) {
+    tot += (leads[i].qlo + leads[i].qhi) / 2;
+    if (leads[i].status === 'won') won++;
+  }
+  setText('st', leads.length);
+  setText('sv', '€' + Math.round(tot).toLocaleString());
+  setText('sw2', won);
+  setText('sc', leads.length ? Math.round(won / leads.length * 100) + '%' : '0%');
+  var tb = document.getElementById('ltb');
+  if (!fil.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#6B6E72">No leads found.</td></tr>'; return; }
+  var html = '';
+  for (var i = 0; i < fil.length; i++) {
+    var l = fil[i];
+    var d = new Date(l.date).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' });
+    var bc = l.status === 'new' ? 'bn' : l.status === 'quoted' ? 'bq' : l.status === 'won' ? 'bw' : 'bl';
+    html += '<tr data-id="' + l.id + '">';
+    html += '<td style="color:#9DA0A4;font-size:12px;white-space:nowrap">' + d + '</td>';
+    html += '<td style="font-size:11px;color:#9DA0A4">' + (l.src || '') + '</td>';
+    html += '<td><div style="color:#F0F1F2;max-width:200px;font-size:12px">' + (l.desc || '').substring(0, 70) + '...</div><div style="font-size:11px;color:#E8620A;margin-top:2px">' + (l.jtype || '') + '</div></td>';
+    html += '<td style="font-size:12px;color:#9DA0A4">' + (l.loc || '') + '</td>';
+    html += '<td style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:600;color:#E8620A">&#8364;' + l.qlo + '&#8211;' + l.qhi + '</td>';
+    html += '<td><span class="bdg ' + bc + '">' + l.status + '</span></td>';
+    html += '<td><select class="status-sel" data-id="' + l.id + '" style="padding:4px 6px;font-size:11px;width:82px;margin-bottom:4px"><option value="new"' + (l.status === 'new' ? ' selected' : '') + '>New</option><option value="quoted"' + (l.status === 'quoted' ? ' selected' : '') + '>Quoted</option><option value="won"' + (l.status === 'won' ? ' selected' : '') + '>Won</option><option value="lost"' + (l.status === 'lost' ? ' selected' : '') + '>Lost</option></select><br><button class="btn bd sm del-btn" data-id="' + l.id + '">Del</button></td>';
+    html += '</tr>';
+  }
+  tb.innerHTML = html;
+  var sels = tb.querySelectorAll('.status-sel');
+  for (var i = 0; i < sels.length; i++) {
+    (function(sel) {
+      sel.addEventListener('change', function() {
+        var id = parseInt(sel.getAttribute('data-id'));
+        for (var j = 0; j < leads.length; j++) { if (leads[j].id === id) { leads[j].status = sel.value; break; } }
+        saveLeads(); drawLeads();
+      });
+    })(sels[i]);
+  }
+  var dels = tb.querySelectorAll('.del-btn');
+  for (var i = 0; i < dels.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function() {
+        if (!confirm('Delete this lead?')) return;
+        var id = parseInt(btn.getAttribute('data-id'));
+        var nl = [];
+        for (var j = 0; j < leads.length; j++) { if (leads[j].id !== id) nl.push(leads[j]); }
+        leads = nl;
+        saveLeads(); drawLeads();
+      });
+    })(dels[i]);
+  }
+}
+
+// PLANNING
+document.getElementById('btn-pfilter').addEventListener('click', drawPlanning);
+
+function drawPlanning() {
+  var co = document.getElementById('pc').value;
+  var ty = document.getElementById('pt2').value;
+  var fil = [];
+  for (var i = 0; i < PLAN.length; i++) {
+    if ((!co || PLAN[i].county === co) && (!ty || PLAN[i].type === ty)) fil.push(PLAN[i]);
+  }
+  var tc = { Extension: 'pe', 'New Build': 'pn2', Renovation: 'pr2', Commercial: 'pc' };
+  var html = '';
+  for (var i = 0; i < fil.length; i++) {
+    var p = fil[i];
+    var cls = tc[p.type] || 'pc';
+    html += '<div class="prow"><div style="color:#F0F1F2">' + p.addr + '</div><div style="color:#9DA0A4">' + p.app + '</div><div><span class="ptag ' + cls + '">' + p.type + '</span></div><div style="color:#9DA0A4">' + p.county + '</div><div><button class="btn bg sm fill-plan-btn" data-app="' + p.app + '" data-addr="' + p.addr + '" data-type="' + p.type + '">Contact</button></div></div>';
+  }
+  document.getElementById('ptb').innerHTML = html || '<div style="padding:30px;text-align:center;color:#6B6E72">No matching applications.</div>';
+  var fpbs = document.getElementById('ptb').querySelectorAll('.fill-plan-btn');
+  for (var i = 0; i < fpbs.length; i++) {
+    (function(b) {
+      b.addEventListener('click', function() {
+        var an = document.getElementById('pna'); if (an) an.value = b.getAttribute('data-app');
+        var ad = document.getElementById('pad'); if (ad) ad.value = b.getAttribute('data-addr');
+        var at = document.getElementById('pat'); if (at) at.value = b.getAttribute('data-type');
+        goTab('planning');
+      });
+    })(fpbs[i]);
+  }
+  var cnts = {};
+  for (var i = 0; i < PLAN.length; i++) cnts[PLAN[i].county] = (cnts[PLAN[i].county] || 0) + 1;
+  var entries = [];
+  for (var k in cnts) entries.push([k, cnts[k]]);
+  entries.sort(function(a, b) { return b[1] - a[1]; });
+  var mx = entries.length ? entries[0][1] : 1;
+  var bhtml = '';
+  for (var i = 0; i < entries.length; i++) {
+    var pct = Math.round(entries[i][1] / mx * 100);
+    bhtml += '<div class="cbar"><div class="cn">' + entries[i][0] + '</div><div class="ctrack"><div class="cfill" style="width:' + pct + '%"></div></div><div class="ccount">' + entries[i][1] + '</div></div>';
+  }
+  document.getElementById('cb').innerHTML = bhtml;
+}
+
+document.getElementById('btn-pletter').addEventListener('click', function() {
+  var name = getVal('pna');
+  var addr = getVal('pad');
+  var type = document.getElementById('pat').value;
+  if (!name || !addr) { alert('Fill in applicant name and address first.'); return; }
+  var po = document.getElementById('po');
+  po.style.display = 'block';
+  po.innerHTML = '<div class="dots" style="padding:12px"><span></span><span></span><span></span></div>';
+  var prompt = 'Write a short professional outreach letter for an Irish property maintenance contractor. Applicant: ' + name + '. They filed a ' + type + ' planning application for: ' + addr + '. Write 3-4 sentences introducing EASY Property Services, noting we saw their planning application, offering a free consultation and quote. Warm professional tone. No markdown, no asterisks. Sign off: EASY Property Services, Dublin/Meath.';
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var txt = (data.content && data.content[0]) ? data.content[0].text : 'Could not generate.';
+    po.innerHTML = '<div class="aibox"><div class="aih">Generated Letter</div><div class="aiq" id="planmsg">' + txt + '</div><div style="margin-top:10px"><button class="btn bg sm" id="btn-cpy-plan">Copy</button></div></div>';
+    var cpb = document.getElementById('btn-cpy-plan');
+    if (cpb) cpb.addEventListener('click', function() {
+      var pm = document.getElementById('planmsg');
+      if (pm) navigator.clipboard.writeText(pm.textContent).then(function() { notif('Copied!'); });
+    });
+  })
+  .catch(function() { po.innerHTML = '<div style="color:#E74C3C;font-size:12px;padding:8px">Error — try again.</div>'; });
+});
+
+// TEMPLATES
+document.getElementById('tflt').addEventListener('change', drawTemplates);
+
+function drawTemplates() {
+  var flt = document.getElementById('tflt').value;
+  var fil = [];
+  for (var i = 0; i < TPLS.length; i++) { if (!flt || TPLS[i].cat === flt) fil.push(TPLS[i]); }
+  var html = '';
+  for (var i = 0; i < fil.length; i++) {
+    var t = fil[i];
+    var on = selTpl === t.id ? ' on' : '';
+    html += '<div class="tcard' + on + '" data-id="' + t.id + '">';
+    html += '<div class="tn">' + t.name + '</div><div class="tt">' + t.tag + '</div>';
+    html += '<div class="tp">' + t.prev + '</div>';
+    html += '<div class="tbody2">' + t.body.replace(/\n/g, '<br>') + '</div>';
+    html += '<div class="tbns"><button class="btn bg sm use-tpl" data-id="' + t.id + '">Use Template</button><button class="btn bp sm cpy-tpl" data-id="' + t.id + '">Copy</button></div>';
+    html += '</div>';
+  }
+  document.getElementById('tg').innerHTML = html;
+  var cards = document.getElementById('tg').querySelectorAll('.tcard');
+  for (var i = 0; i < cards.length; i++) {
+    (function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON') return;
+        var id = card.getAttribute('data-id');
+        selTpl = selTpl === id ? null : id;
+        drawTemplates();
+      });
+    })(cards[i]);
+  }
+  var uses = document.getElementById('tg').querySelectorAll('.use-tpl');
+  for (var i = 0; i < uses.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        for (var j = 0; j < TPLS.length; j++) {
+          if (TPLS[j].id === id) { var po = document.getElementById('pout'); if (po) po.value = TPLS[j].body; break; }
+        }
+      });
+    })(uses[i]);
+  }
+  var cpys = document.getElementById('tg').querySelectorAll('.cpy-tpl');
+  for (var i = 0; i < cpys.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        for (var j = 0; j < TPLS.length; j++) {
+          if (TPLS[j].id === id) { navigator.clipboard.writeText(TPLS[j].body).then(function() { notif('Copied!'); }); break; }
+        }
+      });
+    })(cpys[i]);
+  }
+}
+
+document.getElementById('btn-cpypers').addEventListener('click', function() {
+  var txt = document.getElementById('pout').value;
+  var n = document.getElementById('pn').value;
+  var j = document.getElementById('pj').value;
+  var p = document.getElementById('pp3').value;
+  if (n) txt = txt.split('[NAME]').join(n);
+  if (j) txt = txt.split('[JOB TYPE]').join(j);
+  if (p) txt = txt.split('[PRICE]').join(p);
+  navigator.clipboard.writeText(txt).then(function() { notif('Copied!'); });
+});
+
+// INIT
+loadLeads();
+updHdr();
+drawPlanning();
+drawTemplates();
+document.getElementById('hd').textContent = new Date().toLocaleDateString('en-IE', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+})();
+</script>
+</body>
+</html>
