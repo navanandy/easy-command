@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EASY Command Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #E8620A;
+  --orange-light: #FF7A25;
+  --orange-dim: rgba(232,98,10,0.12);
+  --orange-glow: rgba(232,98,10,0.25);
+  --anthracite: #2B2D2F;
+  --anthracite-light: #3A3D40;
+  --anthracite-lighter: #4A4D51;
+  --grey: #6B6E72;
+  --grey-light: #9DA0A4;
+  --grey-lighter: #C8CACC;
+  --bg: #1A1B1C;
+  --bg-card: #222426;
+  --bg-card2: #282A2C;
+  --border: rgba(255,255,255,0.07);
+  --border-accent: rgba(232,98,10,0.35);
+  --text: #F0F1F2;
+  --text-muted: #9DA0A4;
+  --text-dim: #6B6E72;
+  --success: #2ECC71;
+  --warning: #F39C12;
+  --danger: #E74C3C;
+  --info: #3498DB;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- HEADER ---- */
+header {
+  background: var(--anthracite);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.logo .easy { color: var(--orange); }
+.logo .rest { color: var(--text); }
+.header-stats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.h-stat {
+  text-align: center;
+}
+.h-stat .val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--orange);
+}
+.h-stat .lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+.header-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- TABS ---- */
+.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--anthracite);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+/* ---- LAYOUT ---- */
+.main {
+  padding: 20px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .grid-2.half { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.card-accent {
+  border-color: var(--border-accent);
+}
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+/* ---- STAT CARD ---- */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-card .val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+}
+.stat-card .lbl {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ---- BUTTONS ---- */
+.btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary {
+  background: var(--orange);
+  color: white;
+}
+.btn-primary:hover { background: var(--orange-light); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--bg-card2); color: var(--text); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-danger {
+  background: rgba(231,76,60,0.15);
+  color: var(--danger);
+  border: 1px solid rgba(231,76,60,0.3);
+}
+.btn-success {
+  background: rgba(46,204,113,0.15);
+  color: var(--success);
+  border: 1px solid rgba(46,204,113,0.3);
+}
+
+/* ---- FORM ELEMENTS ---- */
+input, textarea, select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  padding: 9px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--orange);
+}
+textarea { resize: vertical; min-height: 80px; }
+select option { background: var(--anthracite); }
+label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  display: block;
+  font-weight: 500;
+}
+.field { margin-bottom: 14px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ---- SOURCE CHIPS ---- */
+.source-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.chip.facebook { background: rgba(66,103,178,0.2); color: #7a9be8; border-color: rgba(66,103,178,0.3); }
+.chip.facebook.active { background: rgba(66,103,178,0.4); border-color: #4267b2; }
+.chip.marketplace { background: rgba(66,103,178,0.15); color: #7a9be8; border-color: rgba(66,103,178,0.25); }
+.chip.marketplace.active { background: rgba(66,103,178,0.35); border-color: #4267b2; }
+.chip.donedeal { background: rgba(232,98,10,0.15); color: #E8820A; border-color: rgba(232,98,10,0.25); }
+.chip.donedeal.active { background: rgba(232,98,10,0.35); border-color: var(--orange); }
+.chip.myhome { background: rgba(46,204,113,0.12); color: #4ecb7a; border-color: rgba(46,204,113,0.25); }
+.chip.myhome.active { background: rgba(46,204,113,0.3); border-color: var(--success); }
+.chip.adverts { background: rgba(52,152,219,0.15); color: #6ab3e8; border-color: rgba(52,152,219,0.25); }
+.chip.adverts.active { background: rgba(52,152,219,0.35); border-color: var(--info); }
+.chip.community { background: rgba(155,89,182,0.15); color: #b97ddd; border-color: rgba(155,89,182,0.25); }
+.chip.community.active { background: rgba(155,89,182,0.35); border-color: #9b59b6; }
+.chip.tiktok { background: rgba(255,0,80,0.12); color: #ff6699; border-color: rgba(255,0,80,0.25); }
+.chip.tiktok.active { background: rgba(255,0,80,0.3); border-color: #ff0050; }
+.chip.instagram { background: rgba(225,48,108,0.15); color: #e8849c; border-color: rgba(225,48,108,0.25); }
+.chip.instagram.active { background: rgba(225,48,108,0.35); border-color: #e1306c; }
+.chip.jobsite { background: rgba(243,156,18,0.15); color: #f5c060; border-color: rgba(243,156,18,0.25); }
+.chip.jobsite.active { background: rgba(243,156,18,0.35); border-color: var(--warning); }
+.chip.referral { background: rgba(46,204,113,0.1); color: #4ecb7a; border-color: rgba(46,204,113,0.2); }
+.chip.referral.active { background: rgba(46,204,113,0.25); border-color: var(--success); }
+
+/* ---- BADGE ---- */
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge-new { background: rgba(52,152,219,0.2); color: var(--info); }
+.badge-quoted { background: rgba(243,156,18,0.2); color: var(--warning); }
+.badge-won { background: rgba(46,204,113,0.2); color: var(--success); }
+.badge-lost { background: rgba(231,76,60,0.2); color: var(--danger); }
+.badge-pending { background: rgba(155,89,182,0.2); color: #b97ddd; }
+
+/* ---- LEAD TABLE ---- */
+.lead-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.lead-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+.lead-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+}
+.lead-table tr:hover td { background: rgba(255,255,255,0.02); }
+.lead-desc { color: var(--text); max-width: 260px; }
+.lead-location { color: var(--text-muted); font-size: 12px; }
+.lead-price { color: var(--orange); font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; }
+
+/* ---- AI RESPONSE BOX ---- */
+.ai-box {
+  background: linear-gradient(135deg, rgba(232,98,10,0.06) 0%, transparent 60%);
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+.ai-box-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--orange);
+}
+.ai-icon {
+  width: 18px; height: 18px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  font-weight: 700;
+}
+.ai-content { line-height: 1.6; color: var(--text); }
+.ai-quote-box {
+  background: var(--bg-card2);
+  border-left: 3px solid var(--orange);
+  padding: 12px 14px;
+  border-radius: 0 7px 7px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+  color: var(--text);
+  font-style: italic;
+}
+
+/* ---- PLANNING TABLE ---- */
+.plan-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 0.7fr 0.7fr 1fr 80px;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  align-items: center;
+  font-size: 13px;
+}
+.plan-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.plan-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.plan-ext { background: rgba(52,152,219,0.15); color: var(--info); }
+.plan-new { background: rgba(46,204,113,0.15); color: var(--success); }
+.plan-comp { background: rgba(243,156,18,0.15); color: var(--warning); }
+.plan-dem { background: rgba(231,76,60,0.15); color: var(--danger); }
+.plan-ref { background: rgba(155,89,182,0.15); color: #b97ddd; }
+
+/* ---- TEMPLATE CARDS ---- */
+.template-card {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.template-card:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-card);
+}
+.template-card.selected {
+  border-color: var(--orange);
+  background: rgba(232,98,10,0.05);
+}
+.template-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.template-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+  background: var(--orange-dim);
+  color: var(--orange);
+}
+.template-preview {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.template-content {
+  display: none;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  padding: 12px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+}
+.template-card.selected .template-content {
+  display: block;
+}
+
+/* ---- PLANNING ALERT ---- */
+.plan-alert {
+  background: rgba(243,156,18,0.08);
+  border: 1px solid rgba(243,156,18,0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* ---- LOADING ---- */
+.loading-dots {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+.loading-dots span {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
+
+/* ---- SECTION DIVIDER ---- */
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---- SCROLLABLE ---- */
+.scroll-x { overflow-x: auto; }
+.mt-16 { margin-top: 16px; }
+.mt-12 { margin-top: 12px; }
+.flex-end { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.text-orange { color: var(--orange); }
+.text-muted { color: var(--text-muted); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+
+/* ---- PRICE BREAKDOWN ---- */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px;
+}
+.price-row.total {
+  border-bottom: none;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  padding-top: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--orange);
+}
+
+/* ---- NOTIFICATION DOT ---- */
+.notif {
+  background: var(--orange);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- PLANNING COUNTIES ---- */
+.county-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.county-name { font-size: 12px; color: var(--text-muted); width: 60px; flex-shrink: 0; }
+.county-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.county-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.county-count { font-size: 12px; color: var(--text-muted); width: 28px; text-align: right; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="easy">EASY</span>
+    <span class="rest"> COMMAND CENTRE</span>
+  </div>
+  <div class="header-stats">
+    <div class="h-stat">
+      <div class="val" id="hdr-leads">0</div>
+      <div class="lbl">Total Leads</div>
+    </div>
+    <div class="h-stat">
+      <div class="val" id="hdr-quoted">€0</div>
+      <div class="lbl">Quoted Value</div>
+    </div>
+    <div class="h-stat">
+      <div class="val" id="hdr-won">0</div>
+      <div class="lbl">Jobs Won</div>
+    </div>
+  </div>
+  <div class="header-date" id="hdr-date"></div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab('pricer')">AI Pricer</button>
+  <button class="tab-btn" onclick="showTab('leads')">Lead Log <span class="notif" id="tab-leads-count" style="margin-left:4px">0</span></button>
+  <button class="tab-btn" onclick="showTab('planning')">Planning Alerts</button>
+  <button class="tab-btn" onclick="showTab('outreach')">Outreach Templates</button>
+</nav>
+
+<!-- ===================== TAB: AI PRICER ===================== -->
+<div class="main">
+<div id="tab-pricer" class="tab-panel active">
+  <div class="grid-2" style="gap:20px; align-items:start">
+
+    <!-- LEFT: Input -->
+    <div>
+      <div class="card card-accent">
+        <div class="card-title"><span class="dot"></span> New Lead — Paste & Price</div>
+
+        <div class="field">
+          <label>Source</label>
+          <div class="source-chips" id="source-chips">
+            <div class="chip facebook active" onclick="selectSource(this,'Facebook Groups')">Facebook Groups</div>
+            <div class="chip marketplace" onclick="selectSource(this,'Facebook Marketplace')">FB Marketplace</div>
+            <div class="chip donedeal" onclick="selectSource(this,'Done Deal')">Done Deal</div>
+            <div class="chip myhome" onclick="selectSource(this,'MyHome.ie')">MyHome.ie</div>
+            <div class="chip adverts" onclick="selectSource(this,'Adverts.ie')">Adverts.ie</div>
+            <div class="chip community" onclick="selectSource(this,'Community Group')">Community Group</div>
+            <div class="chip tiktok" onclick="selectSource(this,'TikTok')">TikTok</div>
+            <div class="chip instagram" onclick="selectSource(this,'Instagram')">Instagram</div>
+            <div class="chip jobsite" onclick="selectSource(this,'Job Site')">Job Site</div>
+            <div class="chip referral" onclick="selectSource(this,'Referral')">Referral</div>
+          </div>
+          <input type="hidden" id="selected-source" value="Facebook Groups">
+        </div>
+
+        <div class="field-row">
+          <div class="field" style="margin:0">
+            <label>Location</label>
+            <input type="text" id="inp-location" placeholder="e.g. Navan, Co. Meath">
+          </div>
+          <div class="field" style="margin:0">
+            <label>Job Type</label>
+            <select id="inp-jobtype">
+              <option value="">Auto-detect</option>
+              <option>Painting & Decorating</option>
+              <option>Plastering</option>
+              <option>Tiling</option>
+              <option>Bathroom Fit-out</option>
+              <option>Kitchen Fit-out</option>
+              <option>Extension / Build</option>
+              <option>Roofing</option>
+              <option>Guttering / Fascia</option>
+              <option>Garden / Landscaping</option>
+              <option>Flooring</option>
+              <option>Electrical</option>
+              <option>Plumbing</option>
+              <option>Damp / Insulation</option>
+              <option>General Maintenance</option>
+              <option>Cleaning</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field mt-12">
+          <label>Paste the job description here</label>
+          <textarea id="inp-desc" rows="5" placeholder="Paste the full post or message from Facebook, Done Deal, etc..."></textarea>
+        </div>
+
+        <div class="flex-end">
+          <button class="btn btn-ghost btn-sm" onclick="clearPricer()">Clear</button>
+          <button class="btn btn-primary" onclick="runPricer()">⚡ Price This Job</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI Output -->
+    <div>
+      <div class="card" id="pricer-output" style="min-height:320px">
+        <div class="card-title"><span class="dot"></span> AI Pricing & Response</div>
+        <div id="pricer-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;color:var(--text-dim)">
+          <div style="font-size:32px;margin-bottom:12px;opacity:0.3">⚡</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text-muted)">Paste a job & hit Price This Job</div>
+          <div style="font-size:12px;margin-top:6px">AI will price the job and generate a ready-to-send response</div>
+        </div>
+        <div id="pricer-loading" style="display:none;padding:60px 20px;text-align:center">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <div style="margin-top:10px;font-size:13px;color:var(--text-muted)">Analysing job...</div>
+        </div>
+        <div id="pricer-result" style="display:none">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <div style="margin-top:12px" id="save-btn-wrap" style="display:none">
+        <button class="btn btn-success" style="width:100%;justify-content:center" onclick="saveLead()">✓ Save to Lead Log</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: LEAD LOG ===================== -->
+<div id="tab-leads" class="tab-panel">
+  <div class="flex-between">
+    <div class="sec-title" style="margin:0">Lead Log</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="text" id="lead-search" placeholder="Search leads..." style="width:180px;padding:7px 10px" oninput="renderLeads()">
+      <select id="lead-filter" style="width:130px;padding:7px 10px" onchange="renderLeads()">
+        <option value="">All Status</option>
+        <option value="new">New</option>
+        <option value="quoted">Quoted</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid-4 mt-16">
+    <div class="stat-card">
+      <div class="val" id="stat-total">0</div>
+      <div class="lbl">Total Leads</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="stat-quoted-val">€0</div>
+      <div class="lbl">Total Quoted</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="stat-won-count">0</div>
+      <div class="lbl">Jobs Won</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="stat-conv">0%</div>
+      <div class="lbl">Conversion Rate</div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="scroll-x">
+      <table class="lead-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Source</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Quote Range</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="lead-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-dim)">No leads logged yet. Use the AI Pricer to add your first lead.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: PLANNING ALERTS ===================== -->
+<div id="tab-planning" class="tab-panel">
+
+  <div class="grid-2" style="gap:20px;align-items:start">
+    <div>
+      <div class="plan-alert">
+        ⚡ Live planning data updates weekly from Meath, Dublin, Louth, Cavan, Kildare councils
+      </div>
+
+      <div class="sec-title">Recent Applications</div>
+
+      <div class="card" style="padding:14px 16px">
+
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <select id="plan-county" style="width:auto;padding:6px 10px;font-size:12px" onchange="renderPlanning()">
+            <option value="">All Counties</option>
+            <option>Meath</option>
+            <option>Dublin</option>
+            <option>Louth</option>
+            <option>Cavan</option>
+            <option>Kildare</option>
+          </select>
+          <select id="plan-type" style="width:auto;padding:6px 10px;font-size:12px" onchange="renderPlanning()">
+            <option value="">All Types</option>
+            <option>Extension</option>
+            <option>New Build</option>
+            <option>Renovation</option>
+            <option>Demolition</option>
+            <option>Commercial</option>
+          </select>
+          <select id="plan-days" style="width:auto;padding:6px 10px;font-size:12px" onchange="renderPlanning()">
+            <option value="14">Last 14 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="60">Last 60 days</option>
+          </select>
+        </div>
+
+        <div class="plan-row plan-header">
+          <div>Address</div>
+          <div>Applicant</div>
+          <div>Type</div>
+          <div>County</div>
+          <div>Filed</div>
+          <div>Action</div>
+        </div>
+        <div id="planning-tbody"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-title">Volume by County</div>
+      <div class="card" style="margin-bottom:16px">
+        <div id="county-bars"></div>
+      </div>
+
+      <div class="sec-title">Contact Builder</div>
+      <div class="card card-accent">
+        <div class="card-title"><span class="dot"></span> Generate Outreach from Planning</div>
+        <div class="field">
+          <label>Applicant Name</label>
+          <input type="text" id="plan-applicant" placeholder="From the planning listing">
+        </div>
+        <div class="field">
+          <label>Address / Development</label>
+          <input type="text" id="plan-address" placeholder="Property address">
+        </div>
+        <div class="field">
+          <label>Application Type</label>
+          <select id="plan-app-type">
+            <option>Extension</option>
+            <option>New Build</option>
+            <option>Renovation</option>
+            <option>Demolition</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="generatePlanningOutreach()">
+          Generate Letter / Message
+        </button>
+        <div id="plan-outreach-result" style="margin-top:12px;display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TAB: OUTREACH TEMPLATES ===================== -->
+<div id="tab-outreach" class="tab-panel">
+  <div class="flex-between">
+    <div class="sec-title" style="margin:0">Outreach Templates</div>
+    <div style="display:flex;gap:8px">
+      <select id="template-filter" style="width:160px;padding:7px 10px;font-size:12px" onchange="renderTemplates()">
+        <option value="">All Templates</option>
+        <option value="social">Social Media</option>
+        <option value="planning">Planning Leads</option>
+        <option value="followup">Follow-up</option>
+        <option value="quote">Quote Delivery</option>
+        <option value="won">Job Won</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;font-size:13px;color:var(--text-muted)">
+    Click a template to expand it. Use the personalise box to customise and copy.
+  </div>
+
+  <div id="templates-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+
+  <div style="margin-top:24px">
+    <div class="sec-title">Quick Personalise</div>
+    <div class="card card-accent">
+      <div class="field-row">
+        <div class="field" style="margin:0">
+          <label>Customer / Name</label>
+          <input type="text" id="pers-name" placeholder="e.g. John" oninput="updatePersonalised()">
+        </div>
+        <div class="field" style="margin:0">
+          <label>Job Type</label>
+          <input type="text" id="pers-job" placeholder="e.g. bathroom renovation" oninput="updatePersonalised()">
+        </div>
+        <div class="field" style="margin:0">
+          <label>Quote / Price</label>
+          <input type="text" id="pers-price" placeholder="e.g. €1,200–€1,600" oninput="updatePersonalised()">
+        </div>
+      </div>
+      <div class="field mt-12">
+        <label>Personalised Message</label>
+        <textarea id="pers-output" rows="5" placeholder="Select a template above, then fill in the fields to personalise it here."></textarea>
+      </div>
+      <div class="flex-end">
+        <button class="btn btn-primary btn-sm" onclick="copyPersonalised()">Copy Message</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+// ---- STATE ----
+function safeGetLeads() {
+  try { return JSON.parse(localStorage.getItem('easy_leads') || '[]'); } catch(e) { return []; }
+}
+var leads = safeGetLeads();
+var selectedSource = 'Facebook Groups';
+var lastPricerResult = null;
+var selectedTemplate = null;
+
+// ---- DATE ----
+document.getElementById('hdr-date').textContent = new Date().toLocaleDateString('en-IE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+
+// ---- TABS ----
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  var btns = document.querySelectorAll('.tab-btn');
+  for(var i=0;i<btns.length;i++){
+    if(btns[i].getAttribute('onclick').includes("'"+id+"'")){
+      btns[i].classList.add('active');
+      break;
+    }
+  }
+  if(id==='leads') renderLeads();
+  if(id==='planning') renderPlanning();
+  if(id==='outreach') renderTemplates();
+}
+
+// ---- SOURCE CHIPS ----
+function selectSource(el, name) {
+  document.querySelectorAll('#source-chips .chip').forEach(c => {
+    var classes = c.className.split(' ');
+    c.className = classes.filter(x => x !== 'active').join(' ');
+  });
+  el.classList.add('active');
+  selectedSource = name;
+  document.getElementById('selected-source').value = name;
+}
+
+// ---- PRICER ----
+function clearPricer() {
+  document.getElementById('inp-desc').value = '';
+  document.getElementById('inp-location').value = '';
+  document.getElementById('inp-jobtype').value = '';
+  document.getElementById('pricer-placeholder').style.display = 'flex';
+  document.getElementById('pricer-result').style.display = 'none';
+  document.getElementById('pricer-loading').style.display = 'none';
+  document.getElementById('save-btn-wrap').style.display = 'none';
+  lastPricerResult = null;
+}
+
+function runPricer() {
+  var desc = document.getElementById('inp-desc').value.trim();
+  if(!desc) { alert('Please paste a job description first.'); return; }
+  var loc = document.getElementById('inp-location').value.trim();
+  var jobtype = document.getElementById('inp-jobtype').value;
+  var source = selectedSource;
+
+  document.getElementById('pricer-placeholder').style.display = 'none';
+  document.getElementById('pricer-result').style.display = 'none';
+  document.getElementById('pricer-loading').style.display = 'block';
+  document.getElementById('save-btn-wrap').style.display = 'none';
+
+  var prompt = `You are an expert property maintenance pricing assistant for the Irish market. A lead has come in.
+
+Source: ${source}
+Location: ${loc || 'Ireland (location not specified)'}
+Job Type Hint: ${jobtype || 'Auto-detect from description'}
+Job Description: ${desc}
+
+Analyse this job and respond ONLY with a JSON object in this exact format (no markdown, no extra text):
+{
+  "jobType": "detected job type",
+  "summary": "one sentence summary of the work needed",
+  "complexity": "Low|Medium|High",
+  "estimatedHours": "e.g. 4-6",
+  "labourCost": "e.g. €400-€600",
+  "materialsCost": "e.g. €150-€250",
+  "quoteLow": 550,
+  "quoteHigh": 850,
+  "urgency": "Low|Medium|High",
+  "flags": ["any red flags or notes"],
+  "responseMessage": "A ready-to-send response message (2-3 sentences). Be professional, warm, mention you can price the job, ask if they're still looking. Do not use asterisks or markdown."
+}`;
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      messages:[{role:'user',content:prompt}]
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById('pricer-loading').style.display = 'none';
+    var text = data.content && data.content[0] ? data.content[0].text : '';
+    try {
+      var i = text.indexOf('{'), j = text.lastIndexOf('}');
+      var result = JSON.parse(text.substring(i, j+1));
+      lastPricerResult = { result, desc, loc, source, jobtype };
+      showPricerResult(result, desc, loc, source);
+    } catch(e) {
+      document.getElementById('pricer-result').innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center">Could not parse response. Try again.</div>';
+      document.getElementById('pricer-result').style.display = 'block';
+    }
+  })
+  .catch(err=>{
+    document.getElementById('pricer-loading').style.display = 'none';
+    document.getElementById('pricer-result').innerHTML = '<div style="color:var(--danger);padding:20px;text-align:center">Error contacting AI. Check your connection.</div>';
+    document.getElementById('pricer-result').style.display = 'block';
+  });
+}
+
+function showPricerResult(r, desc, loc, source) {
+  var complexColor = r.complexity==='High'?'var(--danger)':r.complexity==='Medium'?'var(--warning)':'var(--success)';
+  var urgColor = r.urgency==='High'?'var(--danger)':r.urgency==='Medium'?'var(--warning)':'var(--success)';
+
+  var flagsHtml = '';
+  if(r.flags && r.flags.length) {
+    flagsHtml = r.flags.map(f=>`<div style="font-size:12px;color:var(--warning);padding:3px 0">⚠ ${f}</div>`).join('');
+  }
+
+  var html = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--text)">${r.jobType}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">${r.summary}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--orange)">€${r.quoteLow}–€${r.quoteHigh}</div>
+        <div style="font-size:11px;color:var(--text-dim)">Estimated Quote Range</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="background:var(--bg);border-radius:7px;padding:10px 12px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Complexity</div>
+        <div style="font-size:14px;font-weight:600;color:${complexColor};margin-top:2px">${r.complexity}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:7px;padding:10px 12px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Est. Hours</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:2px">${r.estimatedHours}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:7px;padding:10px 12px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">Urgency</div>
+        <div style="font-size:14px;font-weight:600;color:${urgColor};margin-top:2px">${r.urgency}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <div class="price-row"><span style="color:var(--text-muted)">Labour</span><span>${r.labourCost}</span></div>
+      <div class="price-row"><span style="color:var(--text-muted)">Materials</span><span>${r.materialsCost}</span></div>
+      <div class="price-row total"><span>Total Quote Range</span><span>€${r.quoteLow}–€${r.quoteHigh}</span></div>
+    </div>
+
+    ${flagsHtml ? `<div style="margin-bottom:14px">${flagsHtml}</div>` : ''}
+
+    <div class="ai-box">
+      <div class="ai-box-header"><span class="ai-icon">A</span> Ready-to-Send Response</div>
+      <div class="ai-quote-box" id="response-text">${r.responseMessage}</div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="copyResponse()">Copy Message</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('pricer-result').innerHTML = html;
+  document.getElementById('pricer-result').style.display = 'block';
+  document.getElementById('save-btn-wrap').style.display = 'block';
+  updateHeader();
+}
+
+function copyResponse() {
+  var el = document.getElementById('response-text');
+  if(el) navigator.clipboard.writeText(el.textContent).then(()=>{ alert('Copied!'); });
+}
+
+// ---- SAVE LEAD ----
+function saveLead() {
+  if(!lastPricerResult) return;
+  var r = lastPricerResult.result;
+  var lead = {
+    id: Date.now(),
+    date: new Date().toISOString(),
+    source: lastPricerResult.source,
+    desc: lastPricerResult.desc.substring(0,200),
+    location: lastPricerResult.loc || 'Unknown',
+    jobType: r.jobType,
+    quoteLow: r.quoteLow,
+    quoteHigh: r.quoteHigh,
+    response: r.responseMessage,
+    status: 'new',
+    notes: ''
+  };
+  leads.push(lead);
+  saveleads();
+  updateHeader();
+  document.getElementById('save-btn-wrap').style.display = 'none';
+  showNotif('Lead saved to log!');
+}
+
+function saveleads() {
+  try { localStorage.setItem('easy_leads', JSON.stringify(leads)); } catch(e) {}
+  document.getElementById('tab-leads-count').textContent = leads.length;
+}
+
+function updateHeader() {
+  document.getElementById('hdr-leads').textContent = leads.length;
+  var total = leads.reduce((s,l)=>s+((l.quoteLow+l.quoteHigh)/2),0);
+  document.getElementById('hdr-quoted').textContent = '€'+Math.round(total).toLocaleString();
+  var won = leads.filter(l=>l.status==='won').length;
+  document.getElementById('hdr-won').textContent = won;
+  document.getElementById('tab-leads-count').textContent = leads.length;
+}
+
+// ---- RENDER LEADS ----
+function renderLeads() {
+  var search = (document.getElementById('lead-search').value||'').toLowerCase();
+  var filter = document.getElementById('lead-filter').value;
+  var filtered = leads.filter(l=>{
+    var matchStatus = !filter || l.status===filter;
+    var matchSearch = !search || l.desc.toLowerCase().includes(search) || (l.location||'').toLowerCase().includes(search) || (l.jobType||'').toLowerCase().includes(search);
+    return matchStatus && matchSearch;
+  });
+
+  // Update stats
+  document.getElementById('stat-total').textContent = leads.length;
+  var totalQ = leads.reduce((s,l)=>s+((l.quoteLow+l.quoteHigh)/2),0);
+  document.getElementById('stat-quoted-val').textContent = '€'+Math.round(totalQ).toLocaleString();
+  var won = leads.filter(l=>l.status==='won').length;
+  document.getElementById('stat-won-count').textContent = won;
+  document.getElementById('stat-conv').textContent = leads.length ? Math.round(won/leads.length*100)+'%' : '0%';
+
+  var tbody = document.getElementById('lead-tbody');
+  if(!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-dim)">No leads found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(l=>{
+    var d = new Date(l.date);
+    var dateStr = d.toLocaleDateString('en-IE',{day:'numeric',month:'short'});
+    var badgeCls = 'badge-'+l.status;
+    return `<tr>
+      <td style="color:var(--text-muted);font-size:12px;white-space:nowrap">${dateStr}</td>
+      <td><span style="font-size:11px;color:var(--text-muted)">${l.source||''}</span></td>
+      <td><div class="lead-desc">${l.desc.substring(0,100)}...</div><div style="font-size:11px;color:var(--orange);margin-top:2px">${l.jobType||''}</div></td>
+      <td class="lead-location">${l.location||'—'}</td>
+      <td class="lead-price">€${l.quoteLow}–€${l.quoteHigh}</td>
+      <td><span class="badge ${badgeCls}">${l.status}</span></td>
+      <td>
+        <select style="padding:4px 6px;font-size:11px;width:90px" onchange="updateLeadStatus(${l.id},this.value)">
+          <option value="new" ${l.status==='new'?'selected':''}>New</option>
+          <option value="quoted" ${l.status==='quoted'?'selected':''}>Quoted</option>
+          <option value="won" ${l.status==='won'?'selected':''}>Won</option>
+          <option value="lost" ${l.status==='lost'?'selected':''}>Lost</option>
+        </select>
+        <button class="btn btn-danger btn-sm" style="margin-top:4px;padding:3px 8px;font-size:10px" onclick="deleteLead(${l.id})">Del</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateLeadStatus(id, status) {
+  var l = leads.find(x=>x.id===id);
+  if(l) { l.status = status; saveleads(); renderLeads(); updateHeader(); }
+}
+
+function deleteLead(id) {
+  if(!confirm('Delete this lead?')) return;
+  leads = leads.filter(x=>x.id!==id);
+  saveleads(); renderLeads(); updateHeader();
+}
+
+// ---- PLANNING DATA ----
+var planningData = [
+  {addr:'14 Beechwood Road, Navan',applicant:'Murphy, Patrick',type:'Extension',county:'Meath',date:'2026-05-18',ref:'PL26/1241'},
+  {addr:'Kilmessan Cross, Kilmessan',applicant:'O\'Brien, Claire',type:'New Build',county:'Meath',date:'2026-05-17',ref:'PL26/1238'},
+  {addr:'22 The Crescent, Trim',applicant:'Walsh, James',type:'Renovation',county:'Meath',date:'2026-05-16',ref:'PL26/1230'},
+  {addr:'Ballybin Industrial Est.',applicant:'Conway Developments Ltd',type:'Commercial',county:'Meath',date:'2026-05-15',ref:'PL26/1225'},
+  {addr:'7 Oakdale Ave, Drogheda',applicant:'Reilly, Sinéad',type:'Extension',county:'Louth',date:'2026-05-18',ref:'PL26/2210'},
+  {addr:'Dundalk Road, Ardee',applicant:'Flanagan, Thomas',type:'New Build',county:'Louth',date:'2026-05-14',ref:'PL26/2198'},
+  {addr:'3 Manor Park, Celbridge',applicant:'Brennan, Aoife',type:'Extension',county:'Kildare',date:'2026-05-17',ref:'PL26/3301'},
+  {addr:'Newbridge Road, Naas',applicant:'O\'Reilly, Michael',type:'Renovation',county:'Kildare',date:'2026-05-16',ref:'PL26/3298'},
+  {addr:'15 Hazel Grove, Cavan Town',applicant:'Smith, Bernadette',type:'Extension',county:'Cavan',date:'2026-05-15',ref:'PL26/4120'},
+  {addr:'Bailieborough Rd, Virginia',applicant:'Kiernan, John',type:'New Build',county:'Cavan',date:'2026-05-13',ref:'PL26/4115'},
+  {addr:'44 Ashbourne Drive, Swords',applicant:'Kelly, Fiona',type:'Extension',county:'Dublin',date:'2026-05-18',ref:'FCC/26/0891'},
+  {addr:'Blanchardstown Village',applicant:'Ryan Properties Ltd',type:'Commercial',county:'Dublin',date:'2026-05-17',ref:'FCC/26/0887'},
+  {addr:'12 Malahide Road, Portmarnock',applicant:'Lynch, Declan',type:'Renovation',county:'Dublin',date:'2026-05-15',ref:'FCC/26/0880'},
+  {addr:'Rathfarnham Castle Estate',applicant:'Heritage Trust',type:'Renovation',county:'Dublin',date:'2026-05-14',ref:'SDCC/26/0345'},
+];
+
+function renderPlanning() {
+  var county = document.getElementById('plan-county').value;
+  var type = document.getElementById('plan-type').value;
+  var days = parseInt(document.getElementById('plan-days').value);
+  var cutoff = new Date(); cutoff.setDate(cutoff.getDate()-days);
+
+  var filtered = planningData.filter(p=>{
+    var d = new Date(p.date);
+    return (!county || p.county===county) && (!type || p.type===type) && d>=cutoff;
+  });
+
+  var typeCls = {Extension:'plan-ext','New Build':'plan-new',Renovation:'plan-comp',Commercial:'plan-ref',Demolition:'plan-dem'};
+
+  var html = filtered.map(p=>`
+    <div class="plan-row">
+      <div>
+        <div style="font-size:13px;color:var(--text)">${p.addr}</div>
+        <div style="font-size:11px;color:var(--text-dim)">${p.ref}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted)">${p.applicant}</div>
+      <div><span class="plan-type-badge ${typeCls[p.type]||'plan-ref'}">${p.type}</span></div>
+      <div style="font-size:12px;color:var(--text-muted)">${p.county}</div>
+      <div style="font-size:12px;color:var(--text-muted)">${new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'})}</div>
+      <div>
+        <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:10px" onclick="fillPlanningContact('${p.applicant}','${p.addr}','${p.type}')">Contact</button>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('planning-tbody').innerHTML = html || '<div style="padding:30px;text-align:center;color:var(--text-dim)">No matching applications.</div>';
+
+  // County bars
+  var counts = {};
+  planningData.forEach(p=>{ counts[p.county] = (counts[p.county]||0)+1; });
+  var max = Math.max(...Object.values(counts));
+  document.getElementById('county-bars').innerHTML = Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+    <div class="county-bar">
+      <div class="county-name">${c}</div>
+      <div class="county-track"><div class="county-fill" style="width:${Math.round(n/max*100)}%"></div></div>
+      <div class="county-count">${n}</div>
+    </div>
+  `).join('');
+}
+
+function fillPlanningContact(applicant, addr, type) {
+  document.getElementById('plan-applicant').value = applicant;
+  document.getElementById('plan-address').value = addr;
+  document.getElementById('plan-app-type').value = type;
+  showTab('planning');
+}
+
+function generatePlanningOutreach() {
+  var name = document.getElementById('plan-applicant').value.trim();
+  var addr = document.getElementById('plan-address').value.trim();
+  var type = document.getElementById('plan-app-type').value;
+  if(!name || !addr){ alert('Fill in applicant name and address.'); return; }
+
+  var res = document.getElementById('plan-outreach-result');
+  res.style.display = 'block';
+  res.innerHTML = '<div class="loading-dots" style="padding:16px"><span></span><span></span><span></span></div>';
+
+  var prompt = `Write a short, professional outreach letter for an Irish property maintenance and construction contractor. 
+The applicant ${name} has just filed a ${type} planning application for ${addr}.
+Write a brief (3-4 sentence) letter introducing Easy Property Services, noting we saw their planning application, and offering a free consultation/quote.
+Be warm, professional, and not salesy. No markdown. No asterisks. Sign off as "EASY Property Services, Dublin/Meath".`;
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    var text = data.content && data.content[0] ? data.content[0].text : 'Could not generate.';
+    res.innerHTML = `<div class="ai-box"><div class="ai-box-header"><span class="ai-icon">A</span> Generated Letter</div><div class="ai-quote-box" id="plan-letter">${text}</div><div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('plan-letter').textContent).then(()=>alert('Copied!'))">Copy</button></div></div>`;
+  })
+  .catch(()=>{ res.innerHTML = '<div style="color:var(--danger);font-size:12px">Error — try again.</div>'; });
+}
+
+// ---- TEMPLATES ----
+var templates = [
+  {
+    id:'t1', category:'social', name:'First Contact — Social Media',
+    tag:'Social Media',
+    preview:'Hi there! Saw your post looking for...',
+    content:`Hi [NAME]! Saw your post looking for help with [JOB TYPE]. We're a local property maintenance company covering Meath, Dublin & surrounding counties.
+
+We can get someone out to look at this and give you a proper quote — no obligation. Are you still looking to get this sorted?
+
+Feel free to DM or call us directly. 📞`
+  },
+  {
+    id:'t2', category:'social', name:'Fast Response — Marketplace',
+    tag:'Facebook Marketplace',
+    preview:'Hey, just seen your listing for...',
+    content:`Hey [NAME], just seen your listing. We cover [LOCATION] and this is exactly the type of work we do.
+
+Can have someone over to quote within 48 hours. What's the best way to reach you?`
+  },
+  {
+    id:'t3', category:'planning', name:'Planning Application Letter',
+    tag:'Planning Leads',
+    preview:'I noticed your planning application for...',
+    content:`Dear [NAME],
+
+I hope this message finds you well. I noticed your recent planning application for [JOB TYPE] at [ADDRESS] and wanted to reach out.
+
+At EASY Property Services, we specialise in exactly this type of project across Co. Meath, Dublin, and Louth. We'd be happy to offer a free site consultation and a detailed quote before your project gets underway.
+
+If you'd like to chat, please don't hesitate to get in touch.
+
+Kind regards,
+EASY Property Services`
+  },
+  {
+    id:'t4', category:'followup', name:'Follow-up — No Reply',
+    tag:'Follow-up',
+    preview:'Just following up on my message...',
+    content:`Hi [NAME], just following up on my message from earlier this week about your [JOB TYPE].
+
+We still have availability and would love to help. Even a quick call to discuss what you're looking for would be great.
+
+No worries if you've gone with someone else — just let us know either way!`
+  },
+  {
+    id:'t5', category:'quote', name:'Quote Delivery',
+    tag:'Quote Delivery',
+    preview:'Hi [NAME], thanks for your time today...',
+    content:`Hi [NAME], thanks for your time today.
+
+As discussed, here's our quote for the [JOB TYPE] at [ADDRESS]:
+
+Estimated price: [PRICE]
+
+This includes all labour and standard materials. Any extras will be agreed with you beforehand.
+
+To proceed, just reply here or give us a call. We can have a start date confirmed within 24 hours.
+
+Thanks again!
+EASY Property Services`
+  },
+  {
+    id:'t6', category:'followup', name:'Follow-up After Quote',
+    tag:'Follow-up',
+    preview:'Hi [NAME], just checking in on the quote...',
+    content:`Hi [NAME], just checking in on the quote we sent over for the [JOB TYPE].
+
+Any questions at all, we're happy to talk through it. We can also look at the scope if the budget needs adjusting.
+
+We've had a couple of enquiries for similar work lately so wanted to touch base — our schedule does fill up.
+
+Hope to hear from you!`
+  },
+  {
+    id:'t7', category:'won', name:'Job Confirmed Response',
+    tag:'Job Won',
+    preview:'Brilliant, great to have you confirmed...',
+    content:`Brilliant [NAME], great to have you confirmed! 
+
+We'll be in touch shortly with the start date and a brief rundown of how the job will run day-to-day.
+
+If you have any questions in the meantime, this number is the best way to reach us.
+
+Looking forward to working with you!
+EASY Property Services`
+  },
+  {
+    id:'t8', category:'social', name:'Done Deal / Adverts Response',
+    tag:'Done Deal',
+    preview:'Hi, saw your ad looking for a contractor...',
+    content:`Hi [NAME], saw your ad looking for a contractor for [JOB TYPE].
+
+We're a fully insured local firm with experience in exactly this type of work. Happy to come out and give you a free no-obligation quote.
+
+What area are you in? We cover most of Meath, Louth, Dublin & Kildare.`
+  },
+];
+
+function renderTemplates() {
+  var filter = document.getElementById('template-filter').value;
+  var filtered = filter ? templates.filter(t=>t.category===filter) : templates;
+  document.getElementById('templates-grid').innerHTML = filtered.map(t=>`
+    <div class="template-card ${selectedTemplate===t.id?'selected':''}" id="tc-${t.id}" onclick="selectTemplate('${t.id}')">
+      <div class="template-name">${t.name}</div>
+      <div class="template-tag">${t.tag}</div>
+      <div class="template-preview">${t.preview}</div>
+      <div class="template-content">${t.content.replace(/\n/g,'<br>')}</div>
+      <div style="margin-top:10px;display:${selectedTemplate===t.id?'flex':'none'};gap:8px" class="tc-btns">
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();useTemplate('${t.id}')">Use This Template</button>
+        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();copyTemplate('${t.id}')">Copy</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectTemplate(id) {
+  selectedTemplate = selectedTemplate===id ? null : id;
+  renderTemplates();
+}
+
+function copyTemplate(id) {
+  var t = templates.find(x=>x.id===id);
+  if(t) navigator.clipboard.writeText(t.content).then(()=>showNotif('Template copied!'));
+}
+
+function useTemplate(id) {
+  var t = templates.find(x=>x.id===id);
+  if(!t) return;
+  document.getElementById('pers-output').value = t.content;
+  document.getElementById('tab-outreach').querySelector('.sec-title:last-of-type').scrollIntoView({behavior:'smooth'});
+}
+
+function updatePersonalised() {
+  var out = document.getElementById('pers-output').value;
+  var name = document.getElementById('pers-name').value;
+  var job = document.getElementById('pers-job').value;
+  var price = document.getElementById('pers-price').value;
+  if(name) out = out.replace(/\[NAME\]/g, name);
+  if(job) out = out.replace(/\[JOB TYPE\]/g, job);
+  if(price) out = out.replace(/\[PRICE\]/g, price);
+  // don't update the textarea if it's the source - just preview
+}
+
+function copyPersonalised() {
+  var text = document.getElementById('pers-output').value;
+  var name = document.getElementById('pers-name').value;
+  var job = document.getElementById('pers-job').value;
+  var price = document.getElementById('pers-price').value;
+  if(name) text = text.replace(/\[NAME\]/g, name);
+  if(job) text = text.replace(/\[JOB TYPE\]/g, job);
+  if(price) text = text.replace(/\[PRICE\]/g, price);
+  navigator.clipboard.writeText(text).then(()=>showNotif('Message copied!'));
+}
+
+// ---- NOTIFICATION ----
+function showNotif(msg) {
+  var el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--orange);color:white;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.4)';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2500);
+}
+
+// ---- INIT ----
+updateHeader();
+renderPlanning();
+renderTemplates();
+document.getElementById('tab-leads-count').textContent = leads.length;
+
+// Expose functions globally for onclick handlers
+window.showTab = showTab;
+window.selectSource = selectSource;
+window.runPricer = runPricer;
+window.clearPricer = clearPricer;
+window.saveLead = saveLead;
+window.copyResponse = copyResponse;
+window.renderLeads = renderLeads;
+window.updateLeadStatus = updateLeadStatus;
+window.deleteLead = deleteLead;
+window.renderPlanning = renderPlanning;
+window.generatePlanningOutreach = generatePlanningOutreach;
+window.fillPlanningContact = fillPlanningContact;
+window.renderTemplates = renderTemplates;
+window.selectTemplate = selectTemplate;
+window.copyTemplate = copyTemplate;
+window.useTemplate = useTemplate;
+window.updatePersonalised = updatePersonalised;
+window.copyPersonalised = copyPersonalised;
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>
