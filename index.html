@@ -782,11 +782,11 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="card" style="padding:14px;margin-top:14px;">
     <div style="font-family:Barlow Condensed,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Quick Links</div>
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <a href="https://www.donedeal.ie/services-for-sale?q=roofer+meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Meath</a>
-      <a href="https://www.donedeal.ie/services-for-sale?q=builder+meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Builder Meath</a>
-      <a href="https://www.donedeal.ie/services-for-sale?q=tradesman+meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Tradesman Meath</a>
-      <a href="https://www.donedeal.ie/services-for-sale?q=roofer+cavan&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Cavan</a>
-      <a href="https://www.donedeal.ie/services-for-sale?q=roofer+louth&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Louth</a>
+      <a href="https://www.donedeal.ie/find/services?q=roofer&location=meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Meath</a>
+      <a href="https://www.donedeal.ie/find/services?q=builder&location=meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Builder Meath</a>
+      <a href="https://www.donedeal.ie/find/services?q=tradesman&location=meath&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Tradesman Meath</a>
+      <a href="https://www.donedeal.ie/find/services?q=roofer&location=cavan&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Cavan</a>
+      <a href="https://www.donedeal.ie/find/services?q=roofer&location=louth&distance=30" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Done Deal - Roofer Louth</a>
       <a href="https://www.meath.ie/council/council-services/planning-and-building/planning-permission/view-or-search-planning-applications/weekly-planning-permissions-list" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Meath Weekly Planning List</a>
       <a href="https://www.facebook.com/groups/meathbuysellandswap" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Facebook - Meath Buy Sell Swap</a>
       <a href="https://www.facebook.com/groups/cavanbuyselltrade" target="_blank" class="btn btn-ghost btn-sm" style="text-align:left;">Facebook - Cavan Buy Sell</a>
@@ -2142,7 +2142,7 @@ function searchDoneDeal(){
   var areaMap = {meath:'meath',cavan:'cavan',louth:'louth',all:'meath+cavan+louth'};
   var tradeMap = {all:'tradesman',roofing:'roofer',extension:'builder',garden:'garden+room',driveway:'driveway',painting:'painter',plumbing:'plumber',electric:'electrician',maintenance:'handyman'};
   var q = encodeURIComponent(tradeMap[trade] + ' ' + areaMap[area]);
-  var url = 'https://www.donedeal.ie/services-for-sale?q='+q+'&distance=30';
+  var url = 'https://www.donedeal.ie/find/services?q='+encodeURIComponent(tradeMap[trade])+'&location='+areaMap[area]+'&distance=30';
   showFJResults([
     {source:'Done Deal',title:'Search: '+tradeMap[trade]+' in '+areaMap[area],desc:'Tap to search Done Deal for new listings now',url:url,date:'Live search',action:'search'}
   ]);
