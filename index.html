@@ -269,6 +269,12 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
               <option value="blockwork-internal">Blockwork — Internal Partition Walls</option>
               <option value="blockwork-garden">Blockwork — Garden / Boundary Walls</option>
             </optgroup>
+            <optgroup label="Drainage &amp; Groundwork">
+              <option value="french-drain">French Drain (hand dug, stone fill) ↗</option>
+              <option value="drain-unblock">Drain Unblock / Rodding</option>
+              <option value="drain-soakpit">Soakpit / Soakaway</option>
+              <option value="manhole-repair">Manhole / Chamber Repair</option>
+            </optgroup>
             <optgroup label="Driveways &amp; Outdoor">
               <option value="driveway-tarmac">Driveway — Tarmac</option>
               <option value="driveway-block">Driveway — Block Paving</option>
@@ -280,6 +286,18 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
               <option value="garden-clearance">Garden Clearance</option>
               <option value="landscaping">Landscaping (full)</option>
             </optgroup>
+            <optgroup label="Leak Detection &amp; Plumbing Repairs">
+              <option value="leak-shower-tray">Shower Tray Leak — Find &amp; Fix ↗</option>
+              <option value="leak-detect">Leak Detection (general)</option>
+              <option value="leak-pipe">Pipe Leak Repair (accessible)</option>
+              <option value="leak-roof-internal">Roof Leak — Internal Trace &amp; Fix</option>
+            </optgroup>
+            <optgroup label="Plastering &amp; Ceilings">
+              <option value="ceiling-patch">Ceiling Patch / Water Damage ↗</option>
+              <option value="plastering-full">Plastering — Full House Skim</option>
+              <option value="plastering-room">Plastering — Per Room</option>
+              <option value="stud-partition">Stud Partition Wall</option>
+            </optgroup>
             <optgroup label="Interior">
               <option value="painting-interior">Interior Painting — Full House</option>
               <option value="painting-room">Interior Painting — Per Room</option>
@@ -288,13 +306,10 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
               <option value="kitchen">Kitchen Renovation</option>
               <option value="flooring-laminate">Flooring — Laminate / LVT</option>
               <option value="flooring-tile">Flooring — Tile</option>
-              <option value="plastering-full">Plastering — Full House Skim</option>
-              <option value="plastering-room">Plastering — Per Room</option>
               <option value="tiling">Tiling (walls / floor)</option>
               <option value="insulation-wall">Insulation — Wall Cavity / Board</option>
               <option value="insulation-attic">Insulation — Attic / Roof</option>
               <option value="dry-lining">Dry Lining / IWI (internal)</option>
-              <option value="stud-partition">Stud Partition Wall</option>
               <option value="door-internal">Internal Door (supply &amp; fit)</option>
               <option value="door-external">External Door (supply &amp; fit)</option>
               <option value="windows-replace">Window Replacement (per window)</option>
@@ -385,6 +400,119 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
           <div style="margin-top:10px;background:var(--bg-card);padding:10px;border-radius:4px;">
             <div class="calc-result">€<span id="dr-total">400</span></div>
             <div class="calc-note" id="dr-note">1 tradesman × 1 day</div>
+          </div>
+        </div>
+
+        <!-- FRENCH DRAIN CALCULATOR -->
+        <div class="calc-box" id="calc-french-drain" style="display:none;">
+          <div class="calc-title">French Drain Calculator — Hand Dug</div>
+          <div class="grid2" style="gap:8px;">
+            <div class="form-group" style="margin:0;"><label>Length (linear metres)</label><input type="number" id="fd-length" value="15" min="1" oninput="calcFrenchDrain()"></div>
+            <div class="form-group" style="margin:0;"><label>Depth</label>
+              <select id="fd-depth" onchange="calcFrenchDrain()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="shallow">Shallow (~600mm)</option>
+                <option value="standard" selected>Standard (~900mm)</option>
+                <option value="deep">Deep (1.2m+)</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid2" style="gap:8px;margin-top:8px;">
+            <div class="form-group" style="margin:0;"><label>Stone (tonnes to supply)</label><input type="number" id="fd-stone" value="1" step="0.5" min="0" oninput="calcFrenchDrain()"></div>
+            <div class="form-group" style="margin:0;"><label>Access</label>
+              <select id="fd-access" onchange="calcFrenchDrain()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="open" selected>Open / Garden</option>
+                <option value="tight">Tight access / by wall</option>
+                <option value="breaking">Breaking existing surface</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:10px;background:var(--bg-card);padding:10px;border-radius:4px;">
+            <div class="calc-result">&#8364;<span id="fd-total">0</span></div>
+            <div class="calc-note" id="fd-note">Supply + Labour</div>
+          </div>
+          <div class="calc-check-grid">
+            <label><input type="checkbox" id="fd-membrane" onchange="calcFrenchDrain()"> Membrane liner (+&#8364;80)</label>
+            <label><input type="checkbox" id="fd-pipe" onchange="calcFrenchDrain()"> Perforated pipe (+&#8364;120)</label>
+            <label><input type="checkbox" id="fd-skip" onchange="calcFrenchDrain()"> Skip hire (+&#8364;320)</label>
+            <label><input type="checkbox" id="fd-reinstate" onchange="calcFrenchDrain()"> Reinstate surface (+&#8364;250)</label>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text-d);line-height:1.6;">
+            Hand digging rate: &#8364;95&#8211;&#8364;130/m (labour). Stone: ~&#8364;65&#8211;&#8364;75/tonne delivered. Skip haul: &#8364;50&#8211;&#8364;70/load.
+          </div>
+        </div>
+
+        <!-- SHOWER TRAY LEAK CALCULATOR -->
+        <div class="calc-box" id="calc-leak-shower-tray" style="display:none;">
+          <div class="calc-title">Shower Tray Leak — Find &amp; Fix</div>
+          <div class="grid2" style="gap:8px;">
+            <div class="form-group" style="margin:0;"><label>Tray Type</label>
+              <select id="lt-tray" onchange="calcLeakShower()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="standard" selected>Standard acrylic tray</option>
+                <option value="stone">Stone resin / low profile</option>
+                <option value="tiled">Tiled wet room floor</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0;"><label>Access (below floor?)</label>
+              <select id="lt-access" onchange="calcLeakShower()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="easy" selected>Access hatch / easy</option>
+                <option value="ceiling">Through ceiling below</option>
+                <option value="floor">Floor up (timber/tile)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px;"><label>Scope</label>
+            <select id="lt-scope" onchange="calcLeakShower()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+              <option value="detect" selected>Detect &amp; reseal (minimal tile damage)</option>
+              <option value="refit">Refit / re-bed tray</option>
+              <option value="replace">Full tray replacement</option>
+            </select>
+          </div>
+          <div style="margin-top:10px;background:var(--bg-card);padding:10px;border-radius:4px;">
+            <div class="calc-result">&#8364;<span id="lt-total">0</span></div>
+            <div class="calc-note" id="lt-note">Labour + materials</div>
+          </div>
+          <div class="calc-check-grid">
+            <label><input type="checkbox" id="lt-retile" onchange="calcLeakShower()"> Retile affected area (+&#8364;280)</label>
+            <label><input type="checkbox" id="lt-plaster" onchange="calcLeakShower()"> Make good plaster (+&#8364;150)</label>
+            <label><input type="checkbox" id="lt-ceiling" onchange="calcLeakShower()"> Repair ceiling below (+&#8364;220)</label>
+            <label><input type="checkbox" id="lt-paint" onchange="calcLeakShower()"> Paint affected area (+&#8364;120)</label>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text-d);line-height:1.6;">
+            Always allow min. half-day (&#8364;240) for detection. Tile matching risk — flag to customer before starting.
+          </div>
+        </div>
+
+        <!-- CEILING PATCH CALCULATOR -->
+        <div class="calc-box" id="calc-ceiling-patch" style="display:none;">
+          <div class="calc-title">Ceiling Patch / Water Damage Repair</div>
+          <div class="grid2" style="gap:8px;">
+            <div class="form-group" style="margin:0;"><label>Patch Size (approx)</label>
+              <select id="cp-size" onchange="calcCeilingPatch()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="small">Small — up to 300x300mm</option>
+                <option value="medium" selected>Medium — 300&#8211;600mm</option>
+                <option value="large">Large — 600mm&#8211;1m</option>
+                <option value="xlarge">Extra large / full bay</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0;"><label>Ceiling Type</label>
+              <select id="cp-type" onchange="calcCeilingPatch()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;width:100%;">
+                <option value="plaster" selected>Plaster / Skim coat</option>
+                <option value="board">Plasterboard + skim</option>
+                <option value="coving">Coving present</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:10px;background:var(--bg-card);padding:10px;border-radius:4px;">
+            <div class="calc-result">&#8364;<span id="cp-total">0</span></div>
+            <div class="calc-note" id="cp-note">Labour + materials + 1 coat paint</div>
+          </div>
+          <div class="calc-check-grid">
+            <label><input type="checkbox" id="cp-paint-full" onchange="calcCeilingPatch()"> Paint full ceiling (blend) (+&#8364;180)</label>
+            <label><input type="checkbox" id="cp-stain" onchange="calcCeilingPatch()"> Stain blocker coat (+&#8364;60)</label>
+            <label><input type="checkbox" id="cp-2rooms" onchange="calcCeilingPatch()"> 2nd room same visit (+&#8364;150)</label>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text-d);line-height:1.6;">
+            Always use stain blocker on water-damaged areas or the stain bleeds through. Min. call-out: &#8364;280.
           </div>
         </div>
 
@@ -831,7 +959,19 @@ body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="section-title">Your Rates</div>
     <div class="section-actions"><button class="btn btn-primary btn-sm" onclick="saveRates()">Save Rates</button></div>
   </div>
-  <div class="card"><div class="card-title">Edit Pricing — Updates AI Pricer</div><table class="rates-table"><thead><tr><th>Job Type</th><th>Small (€)</th><th>Medium (€)</th><th>Large (€)</th></tr></thead><tbody id="rates-tbody"></tbody></table></div>
+  <div class="card">
+    <div class="card-title">Edit Pricing — Updates AI Pricer</div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text-m);line-height:1.6;">
+      <strong style="color:var(--orange);">2026 Irish Market Rates</strong> — Updated Oct 2026. All prices include 15% margin buffer.<br>
+      <strong>Supply+Fit</strong> = you buy &amp; supply all materials + labour &nbsp;|&nbsp; <strong>Labour Only</strong> = customer supplies materials, you charge labour+markup.<br>
+      Small = terrace/small job &nbsp;|&nbsp; Medium = semi-d/average &nbsp;|&nbsp; Large = detached/complex. All prices ex-VAT (13.5% applies).
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button class="btn btn-outline btn-sm" onclick="setRateView('sf')" id="rbtn-sf" style="background:var(--orange);color:#fff;">Supply+Fit</button>
+      <button class="btn btn-ghost btn-sm" onclick="setRateView('lo')" id="rbtn-lo">Labour Only</button>
+    </div>
+    <table class="rates-table"><thead><tr><th>Job Type</th><th>Small (€)</th><th>Medium (€)</th><th>Large (€)</th></tr></thead><tbody id="rates-tbody"></tbody></table>
+  </div>
 </div>
 
 <!-- QUOTES & INVOICES -->
@@ -1072,72 +1212,100 @@ function switchTab(tab, el){
 // DEFAULT RATES
 // ============================================================
 function getDefaultRates(){
+  // 2026 Irish market rates (incl. 15% margin buffer). small=small job/terraced, medium=semi-d/avg, large=detached/complex
+  // Each entry: small/medium/large = supply+fit price to charge customer; labour = labour-only rate (customer supplies materials)
   return {
-    'roof-replace':     {label:'Roof Replacement (pitched, slate)', small:9500, medium:16000, large:26000},
-    'roof-repair':      {label:'Roof Repair / Patch',               small:450,  medium:900,   large:1600},
-    'flat-roof-torch':  {label:'Flat Roof - Torch-On Felt',         small:1800, medium:3200,  large:5500},
-    'flat-roof-epdm':   {label:'Flat Roof - EPDM Rubber',           small:2200, medium:4000,  large:7000},
-    'gutters-clean':    {label:'Gutters - Clean & Repair',          small:160,  medium:240,   large:380},
-    'gutters-replace':  {label:'Gutters - Full Replace (uPVC)',      small:900,  medium:1500,  large:2600},
-    'fascia-soffit':    {label:'Fascia & Soffit Replacement',       small:1400, medium:2400,  large:3800},
-    'gutters-fascia':   {label:'Gutters + Fascia + Soffit (full)',  small:2200, medium:3500,  large:5500},
-    'chimney-clean':    {label:'Chimney Sweep / Clean',             small:80,   medium:80,    large:80},
-    'chimney-repair':   {label:'Chimney Repointing / Flashing',     small:350,  medium:650,   large:1000},
-    'chimney-rebuild':  {label:'Chimney Rebuild (full)',            small:2200, medium:3500,  large:5500},
-    'skylight':         {label:'Velux / Skylight Installation',     small:900,  medium:1400,  large:2000},
-    'leadwork':         {label:'Lead Flashing / Valley Lead',       small:350,  medium:650,   large:1200},
-    'ridging':          {label:'Ridge Tiles / Capping (full run)',  small:600,  medium:1100,  large:1900},
-    'extension-single': {label:'Single Storey Extension',          small:65000,medium:95000, large:140000},
-    'extension-double': {label:'Double Storey Extension',          small:100000,medium:145000,large:210000},
-    'garage-conversion':{label:'Garage Conversion',                small:14000,medium:20000, large:30000},
-    'attic-conversion': {label:'Attic Conversion',                 small:30000,medium:42000, large:60000},
-    'attic-dormer':     {label:'Attic + Dormer Extension',         small:42000,medium:58000, large:80000},
-    'garden-block-sm':  {label:'Garden Building - Block (small ~12sqm)',  small:8500, medium:8500, large:8500},
-    'garden-block-med': {label:'Garden Building - Block (medium ~25sqm)', small:16500,medium:16500,large:16500},
-    'garden-block-lg':  {label:'Garden Building - Block (large ~40sqm)',  small:26000,medium:26000,large:26000},
-    'garden-timber-sm': {label:'Garden Building - Timber+Render (small ~12sqm)', small:5500, medium:5500, large:5500},
-    'garden-timber-med':{label:'Garden Building - Timber+Render (medium ~25sqm)',small:10500,medium:10500,large:10500},
-    'garden-timber-lg': {label:'Garden Building - Timber+Render (large ~40sqm)', small:16000,medium:16000,large:16000},
-    'blockwork-found':  {label:'Blockwork - Foundations / Footings',  small:2800, medium:5500, large:9500},
-    'blockwork-walls':  {label:'Blockwork - External Cavity Walls',   small:3500, medium:7000, large:14000},
-    'blockwork-internal':{label:'Blockwork - Internal Partition Walls',small:1800,medium:3500, large:6500},
-    'blockwork-garden': {label:'Blockwork - Garden / Boundary Walls', small:1200, medium:2800, large:5000},
-    'driveway-tarmac':  {label:'Driveway - Tarmac',                   small:3200, medium:5500, large:9000},
-    'driveway-block':   {label:'Driveway - Block Paving',             small:5000, medium:9000, large:15000},
-    'driveway-resin':   {label:'Driveway - Resin Bound',              small:4500, medium:7500, large:13000},
-    'patio-paving':     {label:'Patio - Natural Stone / Paving',      small:2500, medium:5000, large:9000},
-    'patio-decking':    {label:'Patio - Timber Decking',              small:2000, medium:4000, large:7000},
-    'fencing-timber':   {label:'Fencing - Timber Panel',              small:900,  medium:1800, large:3500},
-    'fencing-block':    {label:'Fencing - Block/Brick Pillars',       small:2200, medium:4500, large:8000},
-    'garden-clearance': {label:'Garden Clearance',                    small:300,  medium:500,  large:850},
-    'landscaping':      {label:'Landscaping (full)',                   small:3500, medium:7500, large:18000},
-    'painting-interior':{label:'Interior Painting - Full House',      small:3200, medium:5500, large:9000},
-    'painting-room':    {label:'Interior Painting - Per Room',        small:380,  medium:480,  large:650},
-    'bathroom':         {label:'Bathroom Renovation',                 small:7500, medium:14000,large:24000},
-    'ensuite':          {label:'Ensuite / Wet Room',                  small:5500, medium:9500, large:16000},
-    'kitchen':          {label:'Kitchen Renovation',                  small:9000, medium:18000,large:35000},
-    'flooring-laminate':{label:'Flooring - Laminate / LVT',          small:2200, medium:4000, large:7000},
-    'flooring-tile':    {label:'Flooring - Tile',                     small:2800, medium:5500, large:9500},
-    'plastering-full':  {label:'Plastering - Full House Skim',        small:3500, medium:6000, large:10000},
-    'plastering-room':  {label:'Plastering - Per Room',               small:450,  medium:600,  large:900},
-    'tiling':           {label:'Tiling (walls / floor)',              small:1400, medium:2800, large:5000},
-    'insulation-wall':  {label:'Insulation - Wall Cavity / Board',   small:2800, medium:5000, large:8500},
-    'insulation-attic': {label:'Insulation - Attic / Roof',           small:900,  medium:1500, large:2500},
-    'dry-lining':       {label:'Dry Lining / IWI (internal)',         small:3500, medium:6500, large:11000},
-    'stud-partition':   {label:'Stud Partition Wall',                 small:600,  medium:1000, large:1800},
-    'door-internal':    {label:'Internal Door (supply & fit)',        small:350,  medium:350,  large:350},
-    'door-external':    {label:'External Door (supply & fit)',        small:1200, medium:1600, large:2500},
-    'windows-replace':  {label:'Window Replacement (per window)',     small:650,  medium:700,  large:900},
-    'painting-exterior':{label:'Exterior Painting',                   small:3500, medium:6000, large:10000},
-    'render-exterior':  {label:'External Render / Pebbledash',        small:4500, medium:8000, large:14000},
-    'power-wash':       {label:'Power Washing',                       small:180,  medium:300,  large:480},
-    'window-clean':     {label:'Window Cleaning (one-off)',           small:80,   medium:130,  large:200},
-    'handyman':         {label:'Handyman / Odd Jobs (per day)',        small:400,  medium:400,  large:400},
-    'skip-hire':        {label:'Skip Hire (standard, 7 days)',        small:280,  medium:380,  large:480},
-    'scaffolding':      {label:'Scaffolding (per week)',              small:800,  medium:1400, large:2200},
-    'day-tradesman':    {label:'Tradesman Day Rate',                  small:400,  medium:400,  large:400},
-    'day-labourer':     {label:'Labourer Day Rate',                   small:250,  medium:250,  large:250},
-    'day-mixed':        {label:'Mixed Crew (tradesman + labourer)',   small:650,  medium:650,  large:650}
+    // --- ROOFING ---
+    'roof-replace':     {label:'Roof Replacement - Slate (pitched)',   small:11000,medium:18500,large:29000, labour_s:4500, labour_m:7500, labour_l:11000},
+    'roof-replace-tile':{label:'Roof Replacement - Concrete Tile',     small:8500, medium:14000,large:22000, labour_s:3500, labour_m:5500, labour_l:8500},
+    'roof-repair':      {label:'Roof Repair / Patch (up to 5 slates)', small:550,  medium:1000, large:1800,  labour_s:300,  labour_m:550,  labour_l:900},
+    'flat-roof-torch':  {label:'Flat Roof - Torch-On Felt',            small:2200, medium:3800, large:6500,  labour_s:900,  labour_m:1600, labour_l:2800},
+    'flat-roof-epdm':   {label:'Flat Roof - EPDM Rubber',              small:2800, medium:5000, large:8500,  labour_s:1100, labour_m:2000, labour_l:3500},
+    'gutters-clean':    {label:'Gutters - Clean & Unblock',            small:180,  medium:260,  large:420,   labour_s:180,  labour_m:260,  labour_l:420},
+    'gutters-replace':  {label:'Gutters - Full Replace (uPVC)',         small:1100, medium:1800, large:3000,  labour_s:500,  labour_m:800,  labour_l:1300},
+    'fascia-soffit':    {label:'Fascia & Soffit Replacement (uPVC)',   small:1700, medium:2900, large:4500,  labour_s:700,  labour_m:1200, labour_l:1900},
+    'gutters-fascia':   {label:'Gutters + Fascia + Soffit (full)',     small:2600, medium:4200, large:6800,  labour_s:1100, labour_m:1800, labour_l:2900},
+    'chimney-clean':    {label:'Chimney Sweep / Clean',                small:100,  medium:100,  large:100,   labour_s:100,  labour_m:100,  labour_l:100},
+    'chimney-repair':   {label:'Chimney Repointing / Flashing',        small:450,  medium:800,  large:1300,  labour_s:280,  labour_m:500,  labour_l:800},
+    'chimney-rebuild':  {label:'Chimney Rebuild (full)',                small:2800, medium:4500, large:7000,  labour_s:1200, labour_m:2000, labour_l:3200},
+    'skylight':         {label:'Velux / Skylight Installation',        small:1300, medium:1900, large:2800,  labour_s:450,  labour_m:650,  labour_l:950},
+    'leadwork':         {label:'Lead Flashing / Valley Lead',          small:500,  medium:900,  large:1600,  labour_s:280,  labour_m:500,  labour_l:900},
+    'ridging':          {label:'Ridge Tiles / Capping (full run)',     small:750,  medium:1350, large:2300,  labour_s:380,  labour_m:650,  labour_l:1100},
+    'roof-valley':      {label:'Roof Valley Replacement',              small:900,  medium:1500, large:2500,  labour_s:400,  labour_m:700,  labour_l:1200},
+    // --- EXTENSIONS & CONVERSIONS ---
+    'extension-single': {label:'Single Storey Extension (per sqm)',    small:1900, medium:2200, large:2600,  labour_s:700,  labour_m:800,  labour_l:950},
+    'extension-double': {label:'Double Storey Extension (per sqm)',    small:2200, medium:2600, large:3200,  labour_s:800,  labour_m:950,  labour_l:1200},
+    'garage-conversion':{label:'Garage Conversion (full)',             small:16000,medium:24000,large:36000, labour_s:6500, labour_m:9500, labour_l:14000},
+    'attic-conversion': {label:'Attic Conversion (full)',              small:35000,medium:50000,large:70000, labour_s:14000,labour_m:20000,labour_l:28000},
+    'attic-dormer':     {label:'Attic + Dormer Extension',            small:48000,medium:68000,large:95000, labour_s:19000,labour_m:27000,labour_l:38000},
+    // --- GARDEN BUILDINGS ---
+    'garden-block-sm':  {label:'Garden Building - Block (~12sqm)',     small:10500,medium:10500,large:10500, labour_s:4500, labour_m:4500, labour_l:4500},
+    'garden-block-med': {label:'Garden Building - Block (~25sqm)',     small:20000,medium:20000,large:20000, labour_s:8500, labour_m:8500, labour_l:8500},
+    'garden-block-lg':  {label:'Garden Building - Block (~40sqm)',     small:31000,medium:31000,large:31000, labour_s:13000,labour_m:13000,labour_l:13000},
+    'garden-timber-sm': {label:'Garden Building - Timber+Clad (~12sqm)',small:6500,medium:6500, large:6500,  labour_s:2800, labour_m:2800, labour_l:2800},
+    'garden-timber-med':{label:'Garden Building - Timber+Clad (~25sqm)',small:12500,medium:12500,large:12500,labour_s:5200, labour_m:5200, labour_l:5200},
+    'garden-timber-lg': {label:'Garden Building - Timber+Clad (~40sqm)',small:19000,medium:19000,large:19000,labour_s:8000, labour_m:8000, labour_l:8000},
+    // --- BLOCKWORK & GROUNDWORK ---
+    'blockwork-found':  {label:'Blockwork - Foundations / Footings',   small:3500, medium:6500, large:11500, labour_s:1400, labour_m:2600, labour_l:4500},
+    'blockwork-walls':  {label:'Blockwork - External Cavity Walls',    small:4500, medium:8500, large:17000, labour_s:1800, labour_m:3500, labour_l:7000},
+    'blockwork-internal':{label:'Blockwork - Internal Partition Walls', small:2200, medium:4200, large:7800,  labour_s:900,  labour_m:1700, labour_l:3200},
+    'blockwork-garden': {label:'Blockwork - Garden / Boundary Walls',  small:1600, medium:3500, large:6500,  labour_s:650,  labour_m:1400, labour_l:2600},
+    // --- DRIVEWAYS & OUTDOOR ---
+    'driveway-tarmac':  {label:'Driveway - Tarmac (supply+lay)',       small:3800, medium:6500, large:11000, labour_s:1500, labour_m:2500, labour_l:4200},
+    'driveway-block':   {label:'Driveway - Block Paving',              small:6000, medium:10500,large:18000, labour_s:2500, labour_m:4200, labour_l:7200},
+    'driveway-resin':   {label:'Driveway - Resin Bound',               small:5500, medium:9000, large:15500, labour_s:2200, labour_m:3600, labour_l:6200},
+    'driveway-concrete':{label:'Driveway - Concrete',                  small:5000, medium:8500, large:14000, labour_s:2000, labour_m:3400, labour_l:5600},
+    'patio-paving':     {label:'Patio - Natural Stone / Paving (per sqm)',small:85,medium:110,  large:145,   labour_s:35,   labour_m:45,   labour_l:55},
+    'patio-decking':    {label:'Patio - Timber Decking (per sqm)',     small:75,   medium:95,   large:130,   labour_s:30,   labour_m:38,   labour_l:52},
+    'fencing-timber':   {label:'Fencing - Timber Panel (per panel)',   small:190,  medium:240,  large:310,   labour_s:80,   labour_m:100,  labour_l:130},
+    'fencing-block':    {label:'Fencing - Block/Brick Pillars (per m)',small:280,  medium:380,  large:520,   labour_s:110,  labour_m:150,  labour_l:210},
+    'garden-clearance': {label:'Garden Clearance (inc skip)',          small:400,  medium:650,  large:1100,  labour_s:280,  labour_m:450,  labour_l:750},
+    'landscaping':      {label:'Landscaping (full design+build)',       small:4500, medium:9500, large:22000, labour_s:1800, labour_m:3800, labour_l:9000},
+    // --- INTERIOR ---
+    'painting-interior':{label:'Interior Painting - Full House',       small:3800, medium:6500, large:11000, labour_s:3200, labour_m:5500, labour_l:9000},
+    'painting-room':    {label:'Interior Painting - Per Room',         small:450,  medium:580,  large:800,   labour_s:380,  labour_m:480,  labour_l:650},
+    'bathroom':         {label:'Bathroom Renovation',                  small:9000, medium:17000,large:30000, labour_s:3500, labour_m:6500, labour_l:11000},
+    'ensuite':          {label:'Ensuite / Wet Room',                   small:6500, medium:12000,large:20000, labour_s:2500, labour_m:4500, labour_l:7500},
+    'kitchen':          {label:'Kitchen Renovation (fit only)',        small:3500, medium:6000, large:10000, labour_s:3500, labour_m:6000, labour_l:10000},
+    'flooring-laminate':{label:'Flooring - Laminate / LVT (per sqm)', small:28,   medium:38,   large:52,    labour_s:12,   labour_m:16,   labour_l:22},
+    'flooring-tile':    {label:'Flooring - Tile (per sqm)',            small:55,   medium:75,   large:110,   labour_s:25,   labour_m:35,   labour_l:50},
+    'plastering-full':  {label:'Plastering - Full House Skim',         small:4200, medium:7000, large:12000, labour_s:3800, labour_m:6200, labour_l:10500},
+    'plastering-room':  {label:'Plastering - Per Room Skim',           small:550,  medium:750,  large:1100,  labour_s:450,  labour_m:620,  labour_l:920},
+    'tiling':           {label:'Tiling - Wall/Floor (per sqm)',        small:45,   medium:60,   large:85,    labour_s:25,   labour_m:35,   labour_l:50},
+    'insulation-wall':  {label:'Insulation - Wall Cavity / Board',     small:3500, medium:6000, large:10500, labour_s:1200, labour_m:2200, labour_l:3800},
+    'insulation-attic': {label:'Insulation - Attic Top-Up',            small:1100, medium:1800, large:3000,  labour_s:500,  labour_m:800,  labour_l:1400},
+    'dry-lining':       {label:'Dry Lining / IWI (per sqm)',           small:45,   medium:60,   large:80,    labour_s:18,   labour_m:24,   labour_l:32},
+    'stud-partition':   {label:'Stud Partition Wall (per sqm)',        small:55,   medium:70,   large:95,    labour_s:22,   labour_m:28,   labour_l:38},
+    'door-internal':    {label:'Internal Door (supply & fit)',         small:420,  medium:420,  large:420,   labour_s:180,  labour_m:180,  labour_l:180},
+    'door-external':    {label:'External Door (supply & fit)',         small:1600, medium:2200, large:3200,  labour_s:500,  labour_m:700,  labour_l:1100},
+    'windows-replace':  {label:'Window Replacement (per window)',      small:850,  medium:950,  large:1200,  labour_s:280,  labour_m:320,  labour_l:420},
+    // --- EXTERIOR ---
+    'painting-exterior':{label:'Exterior Painting (full house)',       small:4200, medium:7200, large:12500, labour_s:3500, labour_m:6000, labour_l:10500},
+    'render-exterior':  {label:'External Render / Pebbledash (per sqm)',small:55,  medium:70,   large:90,    labour_s:22,   labour_m:28,   labour_l:36},
+    'cladding-ext':     {label:'External Cladding (timber/composite per sqm)',small:80,medium:110,large:150, labour_s:30,   labour_m:40,   labour_l:55},
+    'power-wash':       {label:'Power Washing (house)',                small:220,  medium:360,  large:580,   labour_s:220,  labour_m:360,  labour_l:580},
+    'window-clean':     {label:'Window Cleaning (one-off)',            small:90,   medium:150,  large:240,   labour_s:90,   labour_m:150,  labour_l:240},
+    // --- DAY RATES & MISC ---
+    'handyman':         {label:'Handyman / Odd Jobs (per day)',        small:450,  medium:450,  large:450,   labour_s:450,  labour_m:450,  labour_l:450},
+    'skip-hire':        {label:'Skip Hire (mini, 7 days)',             small:320,  medium:420,  large:550,   labour_s:320,  labour_m:420,  labour_l:550},
+    'scaffolding':      {label:'Scaffolding (per week)',               small:950,  medium:1700, large:2800,  labour_s:950,  labour_m:1700, labour_l:2800},
+    'day-tradesman':    {label:'Tradesman Day Rate (SEO min 2026)',    small:480,  medium:480,  large:480,   labour_s:480,  labour_m:480,  labour_l:480},
+    'day-labourer':     {label:'Labourer Day Rate',                    small:280,  medium:280,  large:280,   labour_s:280,  labour_m:280,  labour_l:280},
+    'day-mixed':        {label:'Mixed Crew (tradesman + labourer)',    small:760,  medium:760,  large:760,   labour_s:760,  labour_m:760,  labour_l:760},
+    'day-plant':        {label:'Plant Hire / Mini Digger (per day)',   small:380,  medium:380,  large:380,   labour_s:380,  labour_m:380,  labour_l:380},
+    // --- DRAINAGE ---
+    'french-drain':     {label:'French Drain - Hand Dug (per lin. m)', small:130,  medium:165,  large:210,   labour_s:55,   labour_m:65,   labour_l:80},
+    'drain-unblock':    {label:'Drain Unblock / Rodding',              small:180,  medium:280,  large:420,   labour_s:180,  labour_m:280,  labour_l:420},
+    'drain-soakpit':    {label:'Soakpit / Soakaway Installation',      small:900,  medium:1500, large:2400,  labour_s:380,  labour_m:620,  labour_l:1000},
+    'manhole-repair':   {label:'Manhole / Chamber Repair',             small:650,  medium:1100, large:1800,  labour_s:280,  labour_m:450,  labour_l:750},
+    // --- LEAK & PLUMBING REPAIR ---
+    'leak-shower-tray': {label:'Shower Tray Leak - Find & Fix',        small:450,  medium:850,  large:1400,  labour_s:350,  labour_m:650,  labour_l:1100},
+    'leak-detect':      {label:'Leak Detection (general)',             small:280,  medium:380,  large:550,   labour_s:280,  labour_m:380,  labour_l:550},
+    'leak-pipe':        {label:'Pipe Leak Repair (exposed)',           small:320,  medium:520,  large:850,   labour_s:220,  labour_m:380,  labour_l:620},
+    'leak-roof-internal':{label:'Roof Leak - Internal Trace & Fix',    small:380,  medium:620,  large:1100,  labour_s:280,  labour_m:450,  labour_l:800},
+    // --- PLASTERING & CEILINGS ---
+    'ceiling-patch':    {label:'Ceiling Patch / Water Damage Repair',  small:280,  medium:420,  large:650,   labour_s:220,  labour_m:340,  labour_l:520},
+    'ceiling-replace':  {label:'Ceiling Board Replace (full room)',    small:550,  medium:850,  large:1400,  labour_s:380,  labour_m:600,  labour_l:950}
   };
 }
 
@@ -1213,13 +1381,17 @@ var RATE_TRADES=400, RATE_LABOUR=250, BLOCK_SQM=650, TIMBER_SQM=420;
 
 function toggleCalcPanels(){
   var v=document.getElementById('pricer-jobtype').value;
-  document.getElementById('calc-slates').style.display    = v==='roof-slates'?'block':'none';
-  document.getElementById('calc-flat-sqm').style.display  = v==='flat-roof-sqm'?'block':'none';
-  document.getElementById('calc-garden-sqm').style.display= (v==='garden-block-sqm'||v==='garden-timber-sqm')?'block':'none';
-  document.getElementById('calc-dayrate').style.display   = (v==='day-tradesman'||v==='day-labourer'||v==='day-mixed')?'block':'none';
+  document.getElementById('calc-slates').style.display         = v==='roof-slates'?'block':'none';
+  document.getElementById('calc-flat-sqm').style.display       = v==='flat-roof-sqm'?'block':'none';
+  document.getElementById('calc-garden-sqm').style.display     = (v==='garden-block-sqm'||v==='garden-timber-sqm')?'block':'none';
+  document.getElementById('calc-dayrate').style.display        = (v==='day-tradesman'||v==='day-labourer'||v==='day-mixed')?'block':'none';
+  document.getElementById('calc-french-drain').style.display   = v==='french-drain'?'block':'none';
+  document.getElementById('calc-leak-shower-tray').style.display = v==='leak-shower-tray'?'block':'none';
+  document.getElementById('calc-ceiling-patch').style.display  = v==='ceiling-patch'?'block':'none';
   if(v==='garden-timber-sqm') document.getElementById('garden-type').value='timber';
   if(v==='garden-block-sqm')  document.getElementById('garden-type').value='block';
   calcSlates(); calcFlatRoof(); calcGarden(); calcDayRate();
+  calcFrenchDrain(); calcLeakShower(); calcCeilingPatch();
 }
 
 function calcSlates(){
@@ -1260,6 +1432,55 @@ function calcDayRate(){
   var t=(trades*RATE_TRADES+labour*RATE_LABOUR)*workers;
   document.getElementById('dr-total').textContent=Math.round(t).toLocaleString();
   document.getElementById('dr-note').textContent=workers+'x crew: '+trades+'d tradesman + '+labour+'d labourer';
+}
+
+function calcFrenchDrain(){
+  var len=Number(document.getElementById('fd-length').value)||0;
+  var depth=document.getElementById('fd-depth').value;
+  var stone=Number(document.getElementById('fd-stone').value)||0;
+  var access=document.getElementById('fd-access').value;
+  var digRate=depth==='shallow'?85:depth==='deep'?130:110;
+  if(access==='tight') digRate+=15;
+  if(access==='breaking') digRate+=25;
+  var t=len*digRate;
+  t+=stone*70;
+  if(document.getElementById('fd-membrane').checked) t+=80;
+  if(document.getElementById('fd-pipe').checked) t+=120;
+  if(document.getElementById('fd-skip').checked) t+=320;
+  if(document.getElementById('fd-reinstate').checked) t+=250;
+  document.getElementById('fd-total').textContent=Math.round(t).toLocaleString();
+  document.getElementById('fd-note').textContent=len+'m @ EUR'+digRate+'/m + '+stone+'t stone';
+}
+
+function calcLeakShower(){
+  var scope=document.getElementById('lt-scope').value;
+  var access=document.getElementById('lt-access').value;
+  var base=scope==='detect'?450:scope==='refit'?850:1400;
+  if(access==='ceiling') base+=280;
+  if(access==='floor') base+=350;
+  var t=base;
+  if(document.getElementById('lt-retile').checked) t+=280;
+  if(document.getElementById('lt-plaster').checked) t+=150;
+  if(document.getElementById('lt-ceiling').checked) t+=220;
+  if(document.getElementById('lt-paint').checked) t+=120;
+  document.getElementById('lt-total').textContent=Math.round(t).toLocaleString();
+  var desc=scope==='detect'?'Detect & reseal':scope==='refit'?'Refit tray':'Full replacement';
+  document.getElementById('lt-note').textContent=desc+' | '+access+' access';
+}
+
+function calcCeilingPatch(){
+  var sz=document.getElementById('cp-size').value;
+  var type=document.getElementById('cp-type').value;
+  var base=sz==='small'?280:sz==='medium'?380:sz==='large'?520:750;
+  if(type==='board') base+=80;
+  if(type==='coving') base+=120;
+  var t=base;
+  if(document.getElementById('cp-paint-full').checked) t+=180;
+  if(document.getElementById('cp-stain').checked) t+=60;
+  if(document.getElementById('cp-2rooms').checked) t+=150;
+  document.getElementById('cp-total').textContent=Math.round(t).toLocaleString();
+  var szLabel=sz==='small'?'up to 300mm':sz==='medium'?'300-600mm':sz==='large'?'600mm-1m':'full bay';
+  document.getElementById('cp-note').textContent='Patch size: '+szLabel+' | '+type;
 }
 
 function calcExtras(){
@@ -1305,6 +1526,44 @@ function getCalcPrice(){
     var labour=Number(document.getElementById('dr-labour').value)||0;
     var workers=Number(document.getElementById('dr-workers').value)||1;
     return Math.round((trades*RATE_TRADES+labour*RATE_LABOUR)*workers);
+  }
+  if(v==='french-drain'){
+    var len=Number(document.getElementById('fd-length').value)||0;
+    var depth=document.getElementById('fd-depth').value;
+    var stone=Number(document.getElementById('fd-stone').value)||0;
+    var access=document.getElementById('fd-access').value;
+    var digRate=depth==='shallow'?85:depth==='deep'?130:110;
+    if(access==='tight') digRate+=15;
+    if(access==='breaking') digRate+=25;
+    var t=len*digRate+stone*70;
+    if(document.getElementById('fd-membrane').checked) t+=80;
+    if(document.getElementById('fd-pipe').checked) t+=120;
+    if(document.getElementById('fd-skip').checked) t+=320;
+    if(document.getElementById('fd-reinstate').checked) t+=250;
+    return Math.round(t);
+  }
+  if(v==='leak-shower-tray'){
+    var scope=document.getElementById('lt-scope').value;
+    var access=document.getElementById('lt-access').value;
+    var base=scope==='detect'?450:scope==='refit'?850:1400;
+    if(access==='ceiling') base+=280;
+    if(access==='floor') base+=350;
+    if(document.getElementById('lt-retile').checked) base+=280;
+    if(document.getElementById('lt-plaster').checked) base+=150;
+    if(document.getElementById('lt-ceiling').checked) base+=220;
+    if(document.getElementById('lt-paint').checked) base+=120;
+    return Math.round(base);
+  }
+  if(v==='ceiling-patch'){
+    var sz=document.getElementById('cp-size').value;
+    var type=document.getElementById('cp-type').value;
+    var base=sz==='small'?280:sz==='medium'?380:sz==='large'?520:750;
+    if(type==='board') base+=80;
+    if(type==='coving') base+=120;
+    if(document.getElementById('cp-paint-full').checked) base+=180;
+    if(document.getElementById('cp-stain').checked) base+=60;
+    if(document.getElementById('cp-2rooms').checked) base+=150;
+    return Math.round(base);
   }
   return null;
 }
@@ -1444,6 +1703,49 @@ function applySiteExtras(){
 // ============================================================
 // AI PRICER
 // ============================================================
+function analyseKeywords(text){
+  var t=text.toLowerCase();
+  var map=[
+    ['french-drain',['french drain','french-drain','drainage drain','linear drain','drain dug','dig drain','soakage drain']],
+    ['drain-unblock',['unblock drain','blocked drain','drain rod','rodding','drain blocked','sewer blocked']],
+    ['drain-soakpit',['soakpit','soakaway','soak pit','soakaway pit']],
+    ['manhole-repair',['manhole','inspection chamber','drain cover','chamber repair']],
+    ['leak-shower-tray',['shower tray','shower leak','tray leak','shower leak','shower floor','wet room leak','shower drain leak']],
+    ['leak-detect',['find leak','trace leak','leak detection','detect leak','locate leak','damp trace']],
+    ['leak-pipe',['pipe leak','burst pipe','leaking pipe','pipe burst','pipe repair','dripping pipe']],
+    ['leak-roof-internal',['roof leak','ceiling wet','ceiling damp','water coming through ceiling','rain coming in']],
+    ['ceiling-patch',['ceiling patch','patch ceiling','water damage ceiling','damp patch ceiling','ceiling repair','600x600','600 x 600','plasterboard ceiling']],
+    ['roof-repair',['slate','slates','ridge tile','roof tile','cracked tile','missing tile','roof repair','roof patch']],
+    ['gutters-clean',['gutter','gutters','downpipe','blocked gutter','fascia','soffit']],
+    ['bathroom',['bathroom','bath','shower','toilet','ensuite','wet room']],
+    ['kitchen',['kitchen','fitted kitchen','worktop']],
+    ['plastering-room',['plaster','skim','plastering','skim coat']],
+    ['driveway-tarmac',['tarmac','driveway','macadam','tarmacadam']],
+    ['driveway-block',['block paving','block drive','paving driveway']],
+    ['extension-single',['extension','house extension','rear extension','side extension']],
+    ['painting-room',['paint','painting','decorator','decorate','emulsion']],
+    ['flooring-laminate',['laminate','lvt','vinyl','floor']],
+    ['flooring-tile',['floor tile','ceramic floor','porcelain floor']],
+    ['tiling',['tiling','tiles','wall tile','splash back','splashback']]
+  ];
+  var found=[];
+  map.forEach(function(item){
+    var key=item[0]; var kws=item[1];
+    for(var i=0;i<kws.length;i++){
+      if(t.indexOf(kws[i])>-1){found.push(key);break;}
+    }
+  });
+  var panel=document.getElementById('keyword-panel');
+  var chips=document.getElementById('keyword-chips');
+  if(!found.length){panel.style.display='none';return;}
+  panel.style.display='block';
+  chips.innerHTML=found.map(function(k){
+    var r=rates[k];
+    var label=r?r.label:k;
+    return '<button class="btn btn-outline btn-sm" onclick="document.getElementById(\'pricer-jobtype\').value=\''+k+'\';toggleCalcPanels();document.getElementById(\'keyword-panel\').style.display=\'none\';" style="font-size:11px;">'+label+'</button>';
+  }).join('');
+}
+
 async function runAIPricer(){
   var jobtype=document.getElementById('pricer-jobtype').value;
   var sizeEl=document.getElementById('pricer-size');
@@ -1596,10 +1898,32 @@ function copyEl(btn){navigator.clipboard.writeText(btn.parentElement.previousEle
 // ============================================================
 // RATES
 // ============================================================
-function renderRates(){
-  document.getElementById('rates-tbody').innerHTML=Object.entries(rates).map(function(entry){var k=entry[0];var r=entry[1];return '<tr><td>'+r.label+'</td><td><input class="rate-input" type="number" value="'+r.small+'" onchange="updateRate(\''+k+'\',\'small\',this.value)"></td><td><input class="rate-input" type="number" value="'+r.medium+'" onchange="updateRate(\''+k+'\',\'medium\',this.value)"></td><td><input class="rate-input" type="number" value="'+r.large+'" onchange="updateRate(\''+k+'\',\'large\',this.value)"></td></tr>';}).join('');
+var rateView = 'sf';
+function setRateView(v){
+  rateView=v;
+  document.getElementById('rbtn-sf').style.background = v==='sf' ? 'var(--orange)' : '';
+  document.getElementById('rbtn-sf').style.color = v==='sf' ? '#fff' : '';
+  document.getElementById('rbtn-sf').className = v==='sf' ? 'btn btn-outline btn-sm' : 'btn btn-ghost btn-sm';
+  document.getElementById('rbtn-lo').style.background = v==='lo' ? 'var(--orange)' : '';
+  document.getElementById('rbtn-lo').style.color = v==='lo' ? '#fff' : '';
+  document.getElementById('rbtn-lo').className = v==='lo' ? 'btn btn-outline btn-sm' : 'btn btn-ghost btn-sm';
+  renderRates();
 }
-function updateRate(k,s,v){rates[k][s]=Number(v);}
+function renderRates(){
+  var lo = rateView==='lo';
+  document.getElementById('rates-tbody').innerHTML=Object.entries(rates).map(function(entry){
+    var k=entry[0]; var r=entry[1];
+    var s = lo ? (r.labour_s||r.small) : r.small;
+    var m = lo ? (r.labour_m||r.medium) : r.medium;
+    var l = lo ? (r.labour_l||r.large) : r.large;
+    var ks = lo?'labour_s':'small'; var km = lo?'labour_m':'medium'; var kl = lo?'labour_l':'large';
+    return '<tr><td>'+r.label+'</td>'
+      +'<td><input class="rate-input" type="number" value="'+s+'" onchange="updateRate(\''+k+'\',\''+ks+'\',this.value)"></td>'
+      +'<td><input class="rate-input" type="number" value="'+m+'" onchange="updateRate(\''+k+'\',\''+km+'\',this.value)"></td>'
+      +'<td><input class="rate-input" type="number" value="'+l+'" onchange="updateRate(\''+k+'\',\''+kl+'\',this.value)"></td></tr>';
+  }).join('');
+}
+function updateRate(k,s,v){if(!rates[k])return;rates[k][s]=Number(v);}
 function saveRates(){localStorage.setItem('ecc_rates',JSON.stringify(rates));toast('Rates saved!');}
 
 // ============================================================
